@@ -1,0 +1,21 @@
+{
+  "name": "ground-station",
+  "version": "0.1.0",
+  "description": "Intermediary web server between the drone and the website to simplify both project components",
+  "license": "ISC",
+  "author": "Gabriel H",
+  "type": "commonjs",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start-test-server": "nodemon ./src/testServer.ts"
+  },
+  "devDependencies": {
+    "@types/express": "^5.0.5",
+    "@types/node": "^24.10.1",
+    "nodemon": "^3.1.11"
+  },
+  "dependencies": {
+    "express": "^5.1.0"
+  }
+}
