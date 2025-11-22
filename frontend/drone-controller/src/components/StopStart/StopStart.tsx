@@ -1,21 +1,26 @@
 import { useState } from "react";
 import "./StopStart.css"
-import { useConnection } from "../../services/DroneConnection";
+import { sendCommandObject, sendCommandString, useConnection } from "../../services/DroneConnection";
+import { DroneCommand, DroneOperation, PassiveCommand } from "../../types";
 
 const StopStart:React.FC = ()=>{
     let isStopped = useConnection().droneInfo.isEStopped;
     let isArmed = useConnection().droneInfo.isArmed;
 
     function emergencyStop(){
+        sendCommandObject(new PassiveCommand(DroneOperation.EMERGENCY_STOP, Date.now()));
     }
-
+    
     function restart(){
+        sendCommandObject(new PassiveCommand(DroneOperation.DISARM, Date.now()));
     }
-
+    
     function armDrone(){
+        sendCommandObject(new PassiveCommand(DroneOperation.ARM, Date.now()));
     }
-
+    
     function disarmDrone(){
+        sendCommandObject(new PassiveCommand(DroneOperation.DISARM, Date.now()));
     }
 
     return(

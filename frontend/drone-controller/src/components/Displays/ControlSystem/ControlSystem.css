@@ -1,0 +1,108 @@
+.wrapper{
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    grid-template-rows: 4fr 1fr;
+    grid-template-areas: 'a b'
+                         'c c';
+    gap: 20px;
+    padding: 10px;
+    padding-top: 0px;
+}
+
+.control-item{
+    padding: 10px;
+    border-radius: 10px;
+    background-color: rgba(0,0,0,0.2);
+    text-align: center;
+    margin-bottom: 15px;
+}
+
+.control-text{
+    margin: 0px;
+    margin-bottom: 5px;
+}
+
+.selector-container{
+    grid-area: a;
+
+}
+
+.value-container{
+    grid-area: b;
+}
+.update-container{
+    grid-area: c;
+}
+
+.update-btn{
+    background-color: #20aed1;
+    border: none;
+    cursor: pointer;
+    padding: 5px;
+    margin: 10px;
+}
+
+.explainer-text{
+    font-size: 0.75rem;
+}
+
+.value-items{
+    height: 100%;
+}
+
+.value-item{
+    display: grid;
+    display: flex;
+    flex-direction: row;
+    justify-content: left;
+    align-items: center;
+    width: 100%;
+    border-bottom: 1px #f5f5f5 solid;
+    padding: 10px;
+    padding-top: 0px;
+    padding-bottom: 0px;
+    gap: 10px;
+    height: fit-content;
+}
+
+.value-name{
+    flex: 2;
+}
+
+.value-button{
+    flex: 1;
+    background-color: rgba(0,0,0,0.4);
+    color: #f5f5f5;
+    border: none;
+    height: 50%;
+    margin: auto;
+    padding: 5px;
+}
+
+.value-button:hover{
+    background-color: rgba(0,0,0,0.2);
+}
+
+.value-input{
+    flex: 1.5;
+    height: 50%;
+    width: 100%;
+    margin: auto;
+}
+
+.value-bar{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.value-changed{
+    background-color: rgba(0,0,0,0.2);
+}
+
+.load-btn{
+    margin: auto;
+    padding: 15px;
+    margin-left: 50px;
+}

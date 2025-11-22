@@ -7,7 +7,7 @@
  * */ 
 import { json } from "stream/consumers";
 import { DroneConnection, DroneData, generateRandomDroneConnection, generateRandomDroneData } from "./types"
-var cors = require('cors')
+const cors = require('cors');
 
 
 
@@ -17,17 +17,28 @@ const app = express();
 
 const port: number = 8080;
 
-var outputdata:DroneConnection = generateRandomDroneConnection();
+
+var lastCommand: String = "";
+
+app.use(cors()); // This allows all origins
+app.use(express.json());
+
+var outputdata:DroneConnection = generateRandomDroneConnection(lastCommand);
 
 setInterval(()=>{
-    outputdata = generateRandomDroneConnection();
+    outputdata = generateRandomDroneConnection(lastCommand);
 }, 1000)
 
 app.get("/", (req, res)=>{
-    res.set('Access-Control-Allow-Origin', 'http://localhost:3000')
     res.send(JSON.stringify(outputdata));
 });
 
+app.post("/commands", (req,res)=>{
+    lastCommand = req.body.command;
+    console.log(req.body.command);
+    res.status(200);
+    res.send({"status": 200});
+})
 
 
 app.listen(port, ()=>{

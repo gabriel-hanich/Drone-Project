@@ -1,8 +1,6 @@
 .wrapper{
-    width: 80%;
     display: grid;
     grid-template-columns: 3fr 1fr;
-
 }
 
 
@@ -47,6 +45,10 @@
     cursor: pointer;
 }
 
+.set-img:active{
+    background-color: rgba(0, 0, 0, 0.3);
+}
+
 #set-right{
     transform: rotate(90deg);
 }
@@ -70,6 +72,10 @@
     p{
         color: black;
     }
+}
+
+.set-elem:active{
+    background-color: rgba(255, 255, 255, 0.7);
 }
 
 .elevation-container{

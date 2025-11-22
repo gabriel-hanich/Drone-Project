@@ -1,6 +1,7 @@
 .primary-container{
     margin: 5px;
     height: 94%;
+    overflow-y: scroll;
 
 }
 

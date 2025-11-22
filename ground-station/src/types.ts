@@ -1,4 +1,3 @@
-
 export interface DroneConnection{
     backendURL: String;
     droneURL: String;
@@ -16,10 +15,13 @@ export interface DroneConnection{
 }
 
 export interface DroneData{
-    droneVersion: String;
     isArmed: boolean;
     isEStopped: boolean;
     lastInstruction: String;
+
+    controlSystemList: String[];
+    currentControlSystem: String;
+    controlSystemVals: any;
 
     // ms
     refreshRate: number;
@@ -56,7 +58,7 @@ export interface DroneData{
     yFinDefilection: number; 
 }
 
-enum DroneOperation{
+export enum DroneOperation{
     ARM = "ARM",
     DISARM = "DISARM",
     EMERGENCY_STOP = "EMERGENCY_STOP",
@@ -65,9 +67,11 @@ enum DroneOperation{
     SET = "SET",
     START_RECORD = "START_RECORD",
     END_RECORD = "END_RECORD",
+    CONTROL_SELECT = "CONTROL_SELECT",
+    CONTROL_SET = "CONTROL_SET" 
 }
 
-enum DroneProperty{
+export enum DroneProperty{
     ROLL = "ROLL",
     ROLL_SETPOINT = "ROLL_SETPOINT",
     PITCH = "PITCH",
@@ -83,6 +87,7 @@ enum DroneProperty{
     ELEVATION = "ELEVATION",
     ELEVATION_SETPOINT = "ELEVATION_SETPOINT"
 }
+
 
 export abstract class DroneCommand{
     operation:DroneOperation;
@@ -141,15 +146,18 @@ function generateRandomDroneCommand(): DroneCommand{
     return DroneCommand.fromString(chosenDroneOp);
 }
 
-export function generateRandomDroneData():DroneData{
+export function generateRandomDroneData(lastCommand: String):DroneData{
     return {
-        droneVersion: "0.1.0",
-        isArmed: true,
+        isArmed: false,
         isEStopped: false,
-        lastInstruction: generateRandomDroneCommand().toString(),
+        lastInstruction: lastCommand,
 
         refreshRate: Math.random(),
         packetAge: Math.random(),
+
+        controlSystemList: ["option1", "option2", "option3"],
+        currentControlSystem: "option1",
+        controlSystemVals: {"a":1, "b":2, "c": 3, "d": 4},
         
         pitch: Math.random() * 90 - 45,
         roll: Math.random() * 90 - 45,
@@ -177,7 +185,7 @@ export function generateRandomDroneData():DroneData{
     }
 }
 
-export function generateRandomDroneConnection():DroneConnection{
+export function generateRandomDroneConnection(lastCommand: String):DroneConnection{
     return {
         backendURL: "localhost:4200",
         droneURL: "localhost:3000",
@@ -189,7 +197,7 @@ export function generateRandomDroneConnection():DroneConnection{
         droneFirmwareVersion: "0.1.0",
         backendFirmwareVersion: "0.1.0",
         frontendFirmwareVersion: "0.1.0",
-        droneInfo:generateRandomDroneData()
+        droneInfo:generateRandomDroneData(lastCommand)
     }
 }
 
@@ -204,5 +212,5 @@ export var initialConnection:DroneConnection = {
         droneFirmwareVersion: "",
         backendFirmwareVersion: "",
         frontendFirmwareVersion: "0.1.0",
-        droneInfo:generateRandomDroneData()
+        droneInfo:generateRandomDroneData("")
 }

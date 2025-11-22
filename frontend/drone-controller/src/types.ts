@@ -20,6 +20,10 @@ export interface DroneData{
     isEStopped: boolean;
     lastInstruction: String;
 
+    controlSystemList: String[];
+    currentControlSystem: String;
+    controlSystemVals: any;
+
     // ms
     refreshRate: number;
     packetAge:number;
@@ -55,7 +59,7 @@ export interface DroneData{
     yFinDefilection: number; 
 }
 
-enum DroneOperation{
+export enum DroneOperation{
     ARM = "ARM",
     DISARM = "DISARM",
     EMERGENCY_STOP = "EMERGENCY_STOP",
@@ -64,9 +68,11 @@ enum DroneOperation{
     SET = "SET",
     START_RECORD = "START_RECORD",
     END_RECORD = "END_RECORD",
+    CONTROL_SELECT = "CONTROL_SELECT",
+    CONTROL_SET = "CONTROL_SET" 
 }
 
-enum DroneProperty{
+export enum DroneProperty{
     ROLL = "ROLL",
     ROLL_SETPOINT = "ROLL_SETPOINT",
     PITCH = "PITCH",
@@ -83,30 +89,59 @@ enum DroneProperty{
     ELEVATION_SETPOINT = "ELEVATION_SETPOINT"
 }
 
+
 export abstract class DroneCommand{
     operation:DroneOperation;
-    
-    constructor(operation:DroneOperation) {
+    time: number;
+
+    constructor(operation:DroneOperation, time:number) {
         this.operation = operation;
+        this.time = time;
     }
 
-    abstract toString(): String;
+    // Returns the string form of the command WITH the timestamp
+    toString(): String{
+        return this.time.toString() + " " + this.toPrettyString(); 
+    }
+
+    // Returns the string form of the command WITHOUT the timestamp
+    abstract toPrettyString(): String;
 
     static fromString(line:String):DroneCommand{
         let lineElems: String[] = line.split(" ");
-        let chosenDroneOp = lineElems[0] as DroneOperation;
 
-        if(chosenDroneOp == DroneOperation.SET || chosenDroneOp == DroneOperation.RESET){
-            let chosenDroneProperty = lineElems[1] as DroneProperty;
-            let amount = parseFloat(lineElems[2].toString());
-            return new ActiveCommand(chosenDroneOp, chosenDroneProperty, amount);
+        if(Number.isNaN(parseFloat(lineElems[0].toString()))){
+            return this.fromString(Date.now().toString() + " " + line);
         }
-        return new PassiveCommand(chosenDroneOp);
+        let time:number = parseFloat(lineElems[0].toString());
+
+        let chosenDroneOp = lineElems[1] as DroneOperation;
+    
+        if(chosenDroneOp == DroneOperation.SET || chosenDroneOp == DroneOperation.RESET){
+            let chosenDroneProperty = lineElems[2] as DroneProperty;
+            let amount = parseFloat(lineElems[3].toString());
+            return new ActiveCommand(time, chosenDroneOp, chosenDroneProperty, amount);
+        }
+
+        if(chosenDroneOp == DroneOperation.CONTROL_SELECT){
+            let chosenControlSystem = lineElems[2];
+            return new ControlSelectCommand(time, chosenControlSystem);
+        }
+
+        if(chosenDroneOp == DroneOperation.CONTROL_SET){
+            let chosenControlVariable = lineElems[2];
+            let chosenControlValue = parseFloat(lineElems[3].toString());
+            return new ControlSetCommand(time, chosenControlVariable, chosenControlValue);
+        }
+
+        
+        return new PassiveCommand(chosenDroneOp, time);
     }
 }
 
 export class PassiveCommand extends DroneCommand{
-    toString(): String {
+    
+    toPrettyString(): String {
         return this.operation.toString();
     }
 
@@ -116,17 +151,48 @@ export class ActiveCommand extends DroneCommand{
     property: DroneProperty;
     amount: number;
 
-    constructor(operation:DroneOperation, property: DroneProperty, amount:number){
-        super(operation);
+    constructor(time:number, operation:DroneOperation, property: DroneProperty, amount:number){
+        super(operation, time);
         this.property = property;
         this.amount = amount;
     }
     
     
-    toString(): String {
-        return this.operation.toString() + " " + this.property.toString() + " " + this.property.toString();
+    toPrettyString(): String {
+        return this.operation.toString() + " " + this.property.toString() + " " + this.amount.toString();
     }
 }
+
+
+// Sets the value associated with a control system
+export class ControlSetCommand extends DroneCommand{
+    controlVariable:String;
+    amount:number;
+
+    constructor(time:number, controlVariable:String, amount:number){
+        super(DroneOperation.CONTROL_SET, time);
+        this.controlVariable = controlVariable;
+        this.amount = amount;
+    }
+    toPrettyString(): String {
+        return "CONTROL_SET " + this.controlVariable + " " + this.amount;
+    }
+}
+
+export class ControlSelectCommand extends DroneCommand{
+    controlName:String;
+
+    constructor(time: number, controlName:String){
+        super(DroneOperation.CONTROL_SELECT, time);
+        this.controlName = controlName;
+    }
+
+    toPrettyString(): String {
+        return "CONTROL_SELECT " + this.controlName;
+    }
+}
+
+
 
 function generateRandomDroneCommand(): DroneCommand{
     let droneOps: String[] = ["ARM","DISARM","EMERGENCY_STOP","HOVER","RESET","SET","START_RECORD","END_RECORD"];
@@ -148,6 +214,10 @@ function generateRandomDroneData():DroneData{
 
         refreshRate: Math.random(),
         packetAge: Math.random(),
+
+        controlSystemList: ["default"],
+        currentControlSystem: "default",
+        controlSystemVals: {},
         
         pitch: Math.random() * 90 - 45,
         roll: Math.random() * 90 - 45,

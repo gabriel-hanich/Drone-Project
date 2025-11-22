@@ -1,38 +1,41 @@
 import "./ManualControl.css"
 import triangle from "../../../assets/triangle.svg"
 import { useState } from "react"
-import { useConnection } from "../../../services/DroneConnection";
+import { sendCommandObject, sendCommandString, useConnection } from "../../../services/DroneConnection";
+import { ActiveCommand, DroneOperation, DroneProperty } from "../../../types";
 
 const ManualControl:React.FC = ()=>{
     const maxHeight = 10; // The maximum height that can be read by the drone (m)
-
+    const speed = 1.0 // The horizontal speed that the arrows will command the drone to go 
     let elevation: number = useConnection().droneInfo.elevation;
     let elevationSetPoint: number = useConnection().droneInfo.elevationSetPoint;
     
     function incrementElevationSetPoint(amount:number){
-        // setElevationSetPoint(elevationSetPoint + amount);
+        sendCommandObject(new ActiveCommand(Date.now(), DroneOperation.SET, DroneProperty.ELEVATION_SETPOINT, elevationSetPoint + amount));
     }
+
+
 
     return(
         <>
             <div className="wrapper">
                 <div className="control-container">
                     <div className="set-container" id="setcontup">
-                        <img src={triangle} alt="Triangle pointing up" className="set-img" id="set-up"/>
+                        <img src={triangle} alt="Triangle pointing up" className="set-img" id="set-up" onMouseDown={() => sendCommandString("SET XVEL_SETPOINT " + speed.toString())} onMouseUp={() => sendCommandString("SET XVEL_SETPOINT 0")}/>
                     </div>
                     <div className="set-container" id="setcontright">
-                        <img src={triangle} alt="Triangle pointing right" className="set-img" id="set-right"/>
+                        <img src={triangle} alt="Triangle pointing right" className="set-img" id="set-right" onMouseDown={() => sendCommandString("SET YVEL_SETPOINT " + speed.toString())} onMouseUp={() => sendCommandString("SET YVEL_SETPOINT 0")}/>
                     </div>
                     <div className="set-container" id="setconthover">
-                        <div className="set-elem" id="set-hover">
+                        <div className="set-elem" id="set-hover" onMouseDown={() => sendCommandString("HOVER")}>
                             <p className="set-text">Hover</p>
                         </div>
                     </div>
                     <div className="set-container" id="setcontleft">
-                        <img src={triangle} alt="Triangle pointing left" className="set-img" id="set-left"/>
+                        <img src={triangle} alt="Triangle pointing left" className="set-img" id="set-left" onMouseDown={() => sendCommandString("SET YVEL_SETPOINT " + (-1 * speed).toString())} onMouseUp={() => sendCommandString("SET YVEL_SETPOINT 0")}/>
                     </div>
                     <div className="set-container" id="setcontdown">
-                        <img src={triangle} alt="Triangle pointing down" className="set-img" id="set-down"/>
+                        <img src={triangle} alt="Triangle pointing down" className="set-img" id="set-down" onMouseDown={() => sendCommandString("SET XVEL_SETPOINT " + (-1 * speed).toString())} onMouseUp={() => sendCommandString("SET XVEL_SETPOINT 0")}/>
                     </div>
                 </div>
                 <div className="elevation-container">

@@ -36,15 +36,7 @@
 
 .settings-button{
     margin: auto;
-    background-color: #1985A1;
-    border: none;
-    cursor: pointer;
-    padding: 5px;
-}
-
-.settings-button:hover{
-    margin: auto;
-    background-color: #1985A1;
+    background-color: #20aed1;
     border: none;
     cursor: pointer;
     padding: 5px;
