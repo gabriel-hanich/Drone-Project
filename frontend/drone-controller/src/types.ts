@@ -63,6 +63,7 @@ export enum DroneOperation{
     ARM = "ARM",
     DISARM = "DISARM",
     EMERGENCY_STOP = "EMERGENCY_STOP",
+    EMERGENCY_RESTART = "EMERGENCY_RESTART",
     HOVER = "HOVER",
     RESET = "RESET",
     SET = "SET",

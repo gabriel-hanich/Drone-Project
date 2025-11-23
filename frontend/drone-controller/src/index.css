@@ -33,6 +33,14 @@ em{
   border-bottom: 1px #f5f5f5 solid;
 }
 
+button{
+  margin: auto;
+  background-color: #20aed1;
+  border: none;
+  cursor: pointer;
+  padding: 5px;
+}
+
 .instrument-cluster{
   display: grid;
   width: 98%;
@@ -122,3 +130,4 @@ em{
 .bold{
   font-weight: 1000;
 }
+

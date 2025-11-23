@@ -12,7 +12,7 @@ const StopStart:React.FC = ()=>{
     }
     
     function restart(){
-        sendCommandObject(new PassiveCommand(DroneOperation.DISARM, Date.now()));
+        sendCommandObject(new PassiveCommand(DroneOperation.EMERGENCY_RESTART, Date.now()));
     }
     
     function armDrone(){

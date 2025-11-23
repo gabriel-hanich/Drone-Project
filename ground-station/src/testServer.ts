@@ -6,7 +6,7 @@
  * as text. Used when developing the associated web app. 
  * */ 
 import { json } from "stream/consumers";
-import { DroneConnection, DroneData, generateRandomDroneConnection, generateRandomDroneData } from "./types"
+import { DroneCommand, DroneConnection, DroneData, handleCommand, initialConnection } from "./types"
 const cors = require('cors');
 
 
@@ -23,18 +23,15 @@ var lastCommand: String = "";
 app.use(cors()); // This allows all origins
 app.use(express.json());
 
-var outputdata:DroneConnection = generateRandomDroneConnection(lastCommand);
+var outputdata:DroneConnection = initialConnection
 
-setInterval(()=>{
-    outputdata = generateRandomDroneConnection(lastCommand);
-}, 1000)
 
 app.get("/", (req, res)=>{
     res.send(JSON.stringify(outputdata));
 });
 
 app.post("/commands", (req,res)=>{
-    lastCommand = req.body.command;
+    outputdata = handleCommand(outputdata, DroneCommand.fromString(req.body.command));
     console.log(req.body.command);
     res.status(200);
     res.send({"status": 200});

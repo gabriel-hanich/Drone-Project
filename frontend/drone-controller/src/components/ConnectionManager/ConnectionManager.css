@@ -34,13 +34,6 @@
     margin-top: 3px;
 }
 
-.settings-button{
-    margin: auto;
-    background-color: #20aed1;
-    border: none;
-    cursor: pointer;
-    padding: 5px;
-}
 
 @keyframes pulseScale {
     0%{
