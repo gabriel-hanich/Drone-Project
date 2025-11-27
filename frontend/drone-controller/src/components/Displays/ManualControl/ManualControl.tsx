@@ -1,6 +1,5 @@
 import "./ManualControl.css"
 import triangle from "../../../assets/triangle.svg"
-import { useState } from "react"
 import { sendCommandObject, sendCommandString, useConnection } from "../../../services/DroneConnection";
 import { ActiveCommand, DroneOperation, DroneProperty } from "../../../types";
 

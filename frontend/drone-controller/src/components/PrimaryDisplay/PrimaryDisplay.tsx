@@ -3,9 +3,10 @@ import ManualControl from "../Displays/ManualControl/ManualControl";
 import "./PrimaryDisplay.css"
 import ControlSystem from "../Displays/ControlSystem/ControlSystem";
 import Calibration from "../Displays/Calibration/Calibration";
+import RecordData from "../Displays/RecordData/RecordData";
 
 const PrimaryDisplay:React.FC = ()=>{
-    let [currentDisplay, setCurrentDisplay] = useState<String>("control");
+    let [currentDisplay, setCurrentDisplay] = useState<String>("record");
 
     return(
         <>
@@ -23,6 +24,7 @@ const PrimaryDisplay:React.FC = ()=>{
                     {currentDisplay == "manual" && <ManualControl></ManualControl>}
                     {currentDisplay == "control" && <ControlSystem></ControlSystem>}
                     {currentDisplay == "calibrate" && <Calibration></Calibration>}
+                    {currentDisplay == "record" && <RecordData></RecordData>}
                 </div>
             </div>
         </>

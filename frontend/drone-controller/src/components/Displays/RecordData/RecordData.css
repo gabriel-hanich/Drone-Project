@@ -1,0 +1,40 @@
+.record-box{
+    width: 100%;
+    height: fit-content;
+    padding: 20px;
+    display: flex;
+    width: 100%;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 30px;
+}
+
+.rec-button{
+    height: 10vh;
+    aspect-ratio: 1/1;
+    border: 2px #f5f5f5 solid;
+    background: none;
+}
+
+.rec-button:hover{
+    box-shadow: 5px 5px 5px #000;
+}
+
+.rec-inset{
+    width: 85%;
+    aspect-ratio: 1/1;
+    margin: auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#start-inset{
+    border-radius: 50%;
+    background-color: #D63230;
+}
+
+#end-inset{
+    background-color: rgba(0, 0, 0, 0.4);
+}
+
