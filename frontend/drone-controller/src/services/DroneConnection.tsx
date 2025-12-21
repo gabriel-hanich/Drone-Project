@@ -1,6 +1,5 @@
 import { ReactNode, useContext, useEffect, useState, createContext } from "react";
 import { DroneCommand, DroneConnection, DroneData, generateRandomDroneConnection, initialConnection } from "../types";
-import { timeStamp } from "console";
 
 
 var backendURL: String = "http://localhost:8080";

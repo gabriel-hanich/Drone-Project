@@ -1,0 +1,20 @@
+epoch_time,delta_time,opTime,isArmed,isEStopped,lastInstruction,refreshRate,packetAge,controlSystemList,currentControlSystem,controlSystemVals,pitch,roll,yaw,pitchSetPoint,rollSetPoint,yawSetPoint,xVel,yVel,zVel,xVelSetPoint,yVelSetPoint,zVelSetPoint,elevation,elevationSetPoint,throttle,xFinDeflection,yFinDefilection,control-a,control-b,control-c,control-d
+1766301117956,41,0,false,false,1766301117901 START_RECORD,0,0,option1/option2/option3,option1,[object Object],0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,2,3,4
+1766301119367,1452,0,false,false,1766301117901 START_RECORD,0,0,option1/option2/option3,option1,[object Object],0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,2,3,4
+1766301119984,2069,0,false,false,1766301117901 START_RECORD,0,0,option1/option2/option3,option1,[object Object],0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,2,3,4
+1766301121374,3459,0,false,false,1766301117901 START_RECORD,0,0,option1/option2/option3,option1,[object Object],0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,2,3,4
+1766301122009,4094,0,false,false,1766301117901 START_RECORD,0,0,option1/option2/option3,option1,[object Object],0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,2,3,4
+1766301123382,5467,0,false,false,1766301117901 START_RECORD,0,0,option1/option2/option3,option1,[object Object],0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,2,3,4
+1766301124032,6117,0,false,false,1766301117901 START_RECORD,0,0,option1/option2/option3,option1,[object Object],0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,2,3,4
+1766301125643,7728,0,false,false,1766301117901 START_RECORD,0,0,option1/option2/option3,option1,[object Object],0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,2,3,4
+1766301126054,8139,0,false,false,1766301117901 START_RECORD,0,0,option1/option2/option3,option1,[object Object],0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,2,3,4
+1766301127429,9514,0,false,false,1766301117901 START_RECORD,0,0,option1/option2/option3,option1,[object Object],0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,2,3,4
+1766301128092,10177,0,false,false,1766301117901 START_RECORD,0,0,option1/option2/option3,option1,[object Object],0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,2,3,4
+1766301129434,11519,0,false,false,1766301117901 START_RECORD,0,0,option1/option2/option3,option1,[object Object],0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,2,3,4
+1766301130122,12207,0,false,false,1766301117901 START_RECORD,0,0,option1/option2/option3,option1,[object Object],0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,2,3,4
+1766301131438,13523,0,false,false,1766301117901 START_RECORD,0,0,option1/option2/option3,option1,[object Object],0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,2,3,4
+1766301132141,14226,0,false,false,1766301117901 START_RECORD,0,0,option1/option2/option3,option1,[object Object],0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,2,3,4
+1766301133445,15530,0,false,false,1766301133112 CONTROL_SET c 7,0,0,option1/option2/option3,option1,[object Object],0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,5,6,7,8
+1766301134161,16246,0,false,false,1766301133112 CONTROL_SET c 7,0,0,option1/option2/option3,option1,[object Object],0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,5,6,7,8
+1766301135453,17538,0,false,false,1766301133112 CONTROL_SET c 7,0,0,option1/option2/option3,option1,[object Object],0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,5,6,7,8
+1766301136186,18271,0,false,false,1766301133112 CONTROL_SET c 7,0,0,option1/option2/option3,option1,[object Object],0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,5,6,7,8

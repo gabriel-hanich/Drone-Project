@@ -6,7 +6,8 @@
  * as text. Used when developing the associated web app. 
  * */ 
 import { json } from "stream/consumers";
-import { DroneCommand, DroneConnection, DroneData, handleCommand, initialConnection } from "./types"
+import { DroneCommand, DroneConnection, DroneData, DroneOperation, handleCommand, initialConnection } from "./types"
+import { RecordKeeper } from "./RecordKeeper";
 const cors = require('cors');
 
 
@@ -16,7 +17,7 @@ const express = require('express');
 const app = express();
 
 const port: number = 8080;
-
+const recordManager = new RecordKeeper();
 
 var lastCommand: String = "";
 
@@ -27,11 +28,22 @@ var outputdata:DroneConnection = initialConnection
 
 
 app.get("/", (req, res)=>{
+    recordManager.takeData(outputdata.droneInfo);
     res.send(JSON.stringify(outputdata));
 });
 
 app.post("/commands", (req,res)=>{
-    outputdata = handleCommand(outputdata, DroneCommand.fromString(req.body.command));
+    let command:DroneCommand = DroneCommand.fromString(req.body.command);
+
+    if(command.operation == DroneOperation.START_RECORD){
+        recordManager.startRecording(outputdata.droneInfo);
+    }
+    if(command.operation == DroneOperation.END_RECORD){
+        recordManager.stopRecording();
+    }
+    
+    outputdata = handleCommand(outputdata, command);
+    outputdata.isRecording = recordManager.isRecording;
     console.log(req.body.command);
     res.status(200);
     res.send({"status": 200});

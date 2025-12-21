@@ -105,7 +105,7 @@ const ControlSystem:React.FC = ()=>{
 
     // Creates a csv file using the current `newParameters`
     function downloadVals(){
-        let outputString = "";
+        let outputString: string = "";
         Object.keys(newControllerParams).forEach((key) => {
             outputString = outputString + key + "," + newControllerParams[key].toString() + "\n"
         });

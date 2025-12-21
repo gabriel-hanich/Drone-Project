@@ -9,12 +9,16 @@ export interface DroneConnection{
     backendFirmwareVersion: String;
     frontendFirmwareVersion: String;
 
+    isRecording: boolean;
+
     pastCommands: String[]
 
     droneInfo:DroneData;
 }
 
 export interface DroneData{
+    opTime: number;
+
     isArmed: boolean;
     isEStopped: boolean;
     lastInstruction: String;
@@ -259,6 +263,7 @@ export function handleCommand(state:DroneConnection, command:DroneCommand): Dron
             state.droneInfo.zVelSetPoint = activeCmd.amount;
         }
     }
+
     state.droneInfo.lastInstruction = command.toString();
     
     return state
@@ -266,6 +271,7 @@ export function handleCommand(state:DroneConnection, command:DroneCommand): Dron
 
 
 var initialDroneData:DroneData = {
+    opTime: 0,
     isArmed: false,
     isEStopped: false,
     lastInstruction: "0 EMERGENCY_STOP",
@@ -310,6 +316,7 @@ export var initialConnection:DroneConnection = {
         droneConnected: true,
         pollingRate: -1,
         pastCommands: [],
+        isRecording: false,
         
         droneFirmwareVersion: "",
         backendFirmwareVersion: "",

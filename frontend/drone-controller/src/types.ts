@@ -10,12 +10,16 @@ export interface DroneConnection{
     backendFirmwareVersion: String;
     frontendFirmwareVersion: String;
 
+    isRecording: boolean;
+
     pastCommands: String[]
 
     droneInfo:DroneData;
 }
 
 export interface DroneData{
+    opTime: number;
+
     isArmed: boolean;
     isEStopped: boolean;
     lastInstruction: String;
@@ -209,6 +213,7 @@ function generateRandomDroneCommand(): DroneCommand{
 
 function generateRandomDroneData():DroneData{
     return {
+        opTime: 0,
         isArmed: true,
         isEStopped: false,
         lastInstruction: generateRandomDroneCommand().toString(),
@@ -253,6 +258,7 @@ export function generateRandomDroneConnection():DroneConnection{
         backendConnected: true,
         droneConnected: true,
         pollingRate: 100,
+        isRecording: false,
         
         pastCommands: [],
         droneFirmwareVersion: "0.1.0",
@@ -269,6 +275,7 @@ export var initialConnection:DroneConnection = {
         droneConnected: false,
         pollingRate: -1,
         pastCommands: [],
+        isRecording: false,
         
         droneFirmwareVersion: "",
         backendFirmwareVersion: "",
