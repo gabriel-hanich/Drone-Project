@@ -1,0 +1,16 @@
+.raw-wrapper{
+    display: block;
+}
+
+.data-container{
+    width: 100%;
+    background-color: rgba(0, 0, 0, 0.2);
+    color: #fff;
+}
+
+code{
+    max-width: 100%;
+    text-wrap: wrap;
+    display: block;
+    white-space: pre-wrap;
+}

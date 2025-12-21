@@ -7,14 +7,15 @@ const RawData:React.FC = ()=>{
     const [rawData, setRawData] = useState<String>("");
 
     useEffect(()=>{
-        setRawData(connection.backendURL);
+        setRawData(JSON.stringify(connection, null, "   "));
+        console.log(JSON.stringify(connection, null, " "));
     }, [connection])
 
 
 
     return(
         <>
-            <div className="wrapper">
+            <div className="wrapper raw-wrapper">
                 <h1>Raw data from the drone</h1>
                 <div className="data-container">
                     <code>{rawData}</code>

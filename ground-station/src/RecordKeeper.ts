@@ -22,8 +22,10 @@ export class RecordKeeper{
         let firstLine:string = "epoch_time,delta_time"
         let keys = Object.keys(initialData);
         keys.forEach((val)=>{
-            firstLine = firstLine + "," + val.toString();
-            this.keyList.push(val.toString());
+            if(val != 'controlSystemVals'){
+                firstLine = firstLine + "," + val.toString();
+                this.keyList.push(val.toString());
+            }
         });
 
         let controlKeys = Object.keys(initialData.controlSystemVals);
