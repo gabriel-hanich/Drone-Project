@@ -5,9 +5,10 @@ import ControlSystem from "../Displays/ControlSystem/ControlSystem";
 import Calibration from "../Displays/Calibration/Calibration";
 import RecordData from "../Displays/RecordData/RecordData";
 import RawData from "../Displays/RawData/RawData";
+import Graph from "../Displays/Graph/Graph";
 
 const PrimaryDisplay:React.FC = ()=>{
-    let [currentDisplay, setCurrentDisplay] = useState<String>("manual");
+    let [currentDisplay, setCurrentDisplay] = useState<String>("graphs");
 
     return(
         <>
@@ -25,6 +26,7 @@ const PrimaryDisplay:React.FC = ()=>{
                     {currentDisplay === "manual" && <ManualControl></ManualControl>}
                     {currentDisplay === "control" && <ControlSystem></ControlSystem>}
                     {currentDisplay === "calibrate" && <Calibration></Calibration>}
+                    {currentDisplay === "graphs" && <Graph></Graph>}
                     {currentDisplay === "record" && <RecordData></RecordData>}
                     {currentDisplay === "raw" && <RawData></RawData>}
                 </div>

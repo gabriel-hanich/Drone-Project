@@ -1,0 +1,2 @@
+Board: ESP32-DevkitC-32UE
+IMU: BNO086
