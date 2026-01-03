@@ -42,6 +42,7 @@ class Sensor : public Component{
 
     protected:
         double lastLatency;
+        double offset;
 };
 
 #endif

@@ -4,7 +4,7 @@
 #include <string>
 #include <bits/stdc++.h>
 #include "CSConstant.h"
-#include "DroneData.h"
+#include "DroneState.h"
 
 using namespace std;
 
@@ -49,7 +49,7 @@ class ControlSystem{
         the existing drone state, and returns the new state, with updated values
         for the different components
         */
-        virtual DroneData updateState(DroneData state);
+        virtual DroneState updateState(DroneState state);
 
 
     

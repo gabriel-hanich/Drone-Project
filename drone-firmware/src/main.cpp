@@ -1,21 +1,37 @@
 #include <Arduino.h>
 
-#include "PhysicalComponents/DriveMotor.h"
-#include "PhysicalComponents/Servo.h"
+#include "ProgramConstants.h"
+#include "Web/WebManager.h"
+#include <time.h>
+#include "esp_log.h"
 
-DriveMotor propellor(1, "Top-most propellor");
-Servo servo(A12, "Servo");
+
+WebManager server(CONSTANTS.ssid, CONSTANTS.password, CONSTANTS.port);
+time_t currentTime;
+
+DroneState currentState;
+DroneState lastState = currentState; // The state of the drone on the last loop;
+int opTimeStart = 0; // The number of milliseconds between the board being powered 
+                     // on and the last time the drone was armed
+
 
 void setup() {
-  // put your setup code here, to run once:
   Serial.begin(9600);
-  propellor.setSpeed(10);
-  servo.setAngle(20);
+  esp_log_level_set("wifi", ESP_LOG_NONE);
+  server.initialise();
+  // server.syncTime();
+
+
+  delay(1000);
 }
 
+
 void loop() {
-  Serial.println("Is anyone out there?");
-  delay(1000);
-  // put your main code here, to run repeatedly:
+  time(&currentTime);
+  currentState.epochTime = currentTime;
+
+  server.updateDroneState(currentState);
+  server.tick();
+  delay(50);
 }
 

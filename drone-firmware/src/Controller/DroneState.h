@@ -1,8 +1,8 @@
-#ifndef DRONEDATA_H
-#define DRONEDATA_H
+#ifndef DRONESTATE_H
+#define DRONESTATE_H
 
 #include <string>
-#include <bits/stdc++.h>
+#include <vector>
 
 #include "CSConstant.h"
 
@@ -13,8 +13,9 @@ using namespace std;
 This is a struct which describes all of the parameters relating
 to the current state of the drone 
 */
-struct DroneData{
+struct DroneState{
     int opTime;
+    int epochTime;
     
     bool isArmed; 
     bool isEStopped;
@@ -56,5 +57,6 @@ struct DroneData{
     double fin3Deflection;
     double fin4Deflection;
 };
+
 
 #endif
