@@ -1,12 +1,10 @@
 #ifndef CSCONSTANT_H
 #define CSCONSTANT_H
 
-#include <string>
-
-using namespace std;
+#include "Arduino.h"
 
 struct CSConstant{
-    string name;
+    String name;
     double value;
 } ;
 

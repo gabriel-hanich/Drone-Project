@@ -2,8 +2,11 @@
 #define WEBMANAGER_H
 
 #include <Wifi.h>
-#include "../Controller/DroneState.h"
-#include "../Command.h"
+#include "../DroneState.h"
+#include "../Commands/Command.h"
+#include "../Commands/PassiveCommand.h"
+#include "../DroneOperation.h"
+
 
 class WebManager{
     /*
@@ -12,7 +15,7 @@ class WebManager{
     */
 
     public:
-        WebManager(char* ssid, char*password, int port);
+        WebManager(const char* ssid, const char* password, int port);
 
 
         /*
@@ -52,13 +55,13 @@ class WebManager{
     private:
         const char* ssid; // The ssid of the wifi network that the drone will connect to 
         const char* password; // The password of the wifi network
-        const int port; // The port that the web server will operate over
+        int port; // The port that the web server will operate over
 
         WiFiServer webServer;
 
         DroneState currentDroneState; // The most recent drone state, to be communicated to 
                                       // whichever device makes a GET request
-        Command lastRecievedCommand; // The last command which was recieved by the server
+        Command lastRecievedCommand = PassiveCommand(0, EMERGENCY_STOP); // The last command which was recieved by the server
 
 
         // This is a function that sends a connected client the value stored in 'currentDroneState' 

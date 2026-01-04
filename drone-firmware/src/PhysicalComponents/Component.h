@@ -1,9 +1,7 @@
 #ifndef COMPONENT_H
 #define COMPONENT_H
 
-#include <string>
-
-using namespace std;
+#include "Arduino.h"
 
 class Component{
     /*
@@ -19,11 +17,11 @@ class Component{
             pinType Is an integer describing whether the pin is an input or output
                     Can just pass INPUT or OUTPUT for this one
         */
-        Component(int pinNumber, string name, int pinType);
+        Component(int pinNumber, String name, int pinType);
 
     protected:
         int pinNumber; // The pin which controls the physical component 
-        string name; // A short description of what the component is and what it does 
+        String name; // A short description of what the component is and what it does 
 };
 
 

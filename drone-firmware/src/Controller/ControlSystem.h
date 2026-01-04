@@ -1,12 +1,11 @@
 #ifndef CONTROLSYSTEM_H
 #define CONTROLSYSTEM_H
 
-#include <string>
-#include <bits/stdc++.h>
 #include "CSConstant.h"
 #include "DroneState.h"
+#include <vector>
+#include "Arduino.h"
 
-using namespace std;
 
 class ControlSystem{
     /*
@@ -20,28 +19,28 @@ class ControlSystem{
         A unique, human readable string describing what type of control
         system is being implemented
         */
-        const string name;
+        const String name;
 
         /*
         A string describing what version of the control system this is
         */
-        const string version;
+        const String version;
 
         // The constructor
-        ControlSystem(string name, string version, vector<CSConstant> initialConstants);
+        ControlSystem(String name, String version, std::vector<CSConstant> initialConstants);
 
 
         /*
         Changes the value of one of the controller constants to the provided
         new value
         */
-        void modifyControlConstant(string parameterName, double newValue);  
+        void modifyControlConstant(String parameterName, double newValue);  
 
 
         /*
         Returns all the control constants 
         */
-        vector<CSConstant> getControlConstants();
+        std::vector<CSConstant> getControlConstants();
 
 
         /*
@@ -58,7 +57,7 @@ class ControlSystem{
         A list containing all the constants that will be used within the
         control system. (i.e the P,I and D values of a PID controller)
         */
-        vector<CSConstant> constants;
+        std::vector<CSConstant> constants;
 
 };
 

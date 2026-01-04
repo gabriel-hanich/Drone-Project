@@ -2,10 +2,9 @@
 #include <esp32-hal-gpio.h>
 #include <string>
 
-using namespace std;
 
 
-Sensor::Sensor(int pinNumber, string name, string measUnits)
+Sensor::Sensor(int pinNumber, String name, String measUnits)
     : Component(pinNumber, name, INPUT),
       units(measUnits), 
       lastLatency(-1) {}

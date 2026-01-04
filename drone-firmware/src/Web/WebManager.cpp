@@ -1,8 +1,10 @@
 #include "WebManager.h"
+#include "./DroneState.h"
 #include <WiFi.h>
 #include <time.h>
 
-WebManager::WebManager(char* ssid, char*password, int port)
+
+WebManager::WebManager(const char* ssid, const char* password, int port)
     : ssid(ssid),
       password(password),
       port(port),
@@ -124,8 +126,8 @@ void WebManager::updateDroneState(DroneState newState){
 
 void WebManager::sendDroneState(WiFiClient client){
     Serial.println("Handling GET Request");
-    String jsonData = "{'success':true, 'testData':true, 'clientAge':-1}";
-   
+    String jsonData = DroneStateToString(currentDroneState);
+
     client.println("HTTP/1.1 200 OK");
     client.println("Content-Type: application/json");
     client.println("Connection: close");

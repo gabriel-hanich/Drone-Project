@@ -2,9 +2,8 @@
 #include <string>
 #include <esp32-hal-gpio.h>
 
-using namespace std;
 
-Servo::Servo(int pinNumber, string name)
+Servo::Servo(int pinNumber, String name)
     : Component(pinNumber, name, OUTPUT),
       angle(0) 
     {};

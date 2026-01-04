@@ -1,10 +1,8 @@
 #ifndef SERVO_H
 #define SERVO_H
 
-#include <string>
 #include "Component.h"
 
-using namespace std;
 
 //TODO determine the min and max values that can be passed to a servo
 
@@ -15,7 +13,7 @@ class Servo: public Component{
     */
     
     public:
-        Servo(int pinNumber, string name);
+        Servo(int pinNumber, String name);
         
         /*
         Takes a number between [MIN] and [MAX] and commands the 

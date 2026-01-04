@@ -2,9 +2,8 @@
 #include <string>
 #include <esp32-hal-gpio.h>
 
-using namespace std;
 
-DriveMotor::DriveMotor(int pinNumber, string name)
+DriveMotor::DriveMotor(int pinNumber, String name)
     : Component(pinNumber, name, OUTPUT),
       throttle(0) {}
 

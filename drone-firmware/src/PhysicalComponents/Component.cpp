@@ -1,8 +1,7 @@
 #include "Component.h"
-#include <string>
 #include <esp32-hal-gpio.h>
 
-using namespace std;
+#include <Arduino.h>;
 
 /*
 pinNumber is the pin which directly controls the physical component 
@@ -10,7 +9,7 @@ name is a brief description of the component
 pinType Is an integer describing whether the pin is an input or output
         Can just pass INPUT or OUTPUT for this one
 */
-Component::Component(int pinNumber, string name, int pinType)
+Component::Component(int pinNumber, String name, int pinType)
     : pinNumber(pinNumber),
       name(name)
 {
