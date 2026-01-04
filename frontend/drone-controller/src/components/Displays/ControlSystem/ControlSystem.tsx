@@ -128,7 +128,7 @@ const ControlSystem:React.FC = ()=>{
 
     return(
         <>
-            <div className="wrapper">
+            <div className="wrapper control-wrapper">
                 <div className="selector-container expand">
                     <div className="control-item">
                         <p className="control-text">Current Control System</p>

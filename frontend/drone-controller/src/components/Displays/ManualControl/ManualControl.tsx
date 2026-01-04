@@ -17,7 +17,7 @@ const ManualControl:React.FC = ()=>{
 
     return(
         <>
-            <div className="wrapper">
+            <div className="wrapper control-wrapper">
                 <div className="control-container">
                     <div className="set-container" id="setcontup">
                         <img src={triangle} alt="Triangle pointing up" className="set-img" id="set-up" onMouseDown={() => sendCommandString("SET XVEL_SETPOINT " + speed.toString())} onMouseUp={() => sendCommandString("SET XVEL_SETPOINT 0")}/>

@@ -106,7 +106,7 @@ const Graph:React.FC = ()=>{
 
     return(
         <>
-           <div className="wrapper">
+           <div className="wrapper graph-wrapper">
                 <div className="graph-container">
                     <Line id="home" options={graphOptions} data={formattedData} />
                 </div>

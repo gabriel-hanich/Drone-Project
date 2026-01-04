@@ -25,7 +25,7 @@ const Calibration:React.FC = ()=>{
 
     return(
         <>
-            <div className="wrapper">
+            <div className="wrapper calibration-wrapper">
                 <div className="sensors-container">
                     <div className="sensor-item">
                         <h2 className="sensor-title">IMU</h2>

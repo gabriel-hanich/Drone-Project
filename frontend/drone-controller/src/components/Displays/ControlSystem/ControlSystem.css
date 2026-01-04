@@ -1,4 +1,4 @@
-.wrapper{
+.control-wrapper{
     width: 90% !important;
     display: grid;
     grid-template-columns: 1fr 2fr;

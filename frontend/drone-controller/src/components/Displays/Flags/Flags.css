@@ -1,0 +1,18 @@
+.warning-container{
+    border: 5px #D63230 solid;
+    border-radius: 7px;
+    margin: 10px;
+    background-color: rgba(214, 50, 48, 0.45);
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+.flag-table{
+    border: 1px white solid;
+    border-collapse: collapse;
+}
+
+table.flag-table td, th{
+    padding: 5px 10px 5px 10px;
+    border: 1px white solid;
+}
