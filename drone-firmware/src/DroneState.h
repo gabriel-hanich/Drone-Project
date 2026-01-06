@@ -3,12 +3,12 @@
 
 #include <Arduino.h>
 #include <vector>
-#include <string>
 
 #include "Controller/CSConstant.h"
 
 /*
  This struct describes the current state of the drone
+ It will be properly documented later
 */
 struct DroneState {
     int opTime;
@@ -18,9 +18,11 @@ struct DroneState {
     bool isEStopped;
     std::string lastInstruction;
 
-    std::vector<std::string> controlSystemList;
-    std::string currentControlSystem;
+    std::vector<String> controlSystemList;
+    String currentControlSystem;
     std::vector<CSConstant> controlSystemVals;
+
+    std::vector<String> activeFlags;
 
     double refreshRate;
     double packetAge;
@@ -58,11 +60,14 @@ struct DroneState {
     double fin4Deflection;
 };
 
-
-inline String stringListToString(const std::vector<std::string>& lst) {
+/*
+This function converts a list of strings into a single string describing 
+the list in JSON format
+*/
+inline String stringListToString(const std::vector<String>& lst) {
     String res = "[";
     for(int i=0; i<lst.size(); i++){
-        res += "'" + String(lst[i].c_str()) + "'";
+        res += "'" + lst[i] + "'";
         
         if(i != lst.size() - 1){
             res += ",";
@@ -72,20 +77,30 @@ inline String stringListToString(const std::vector<std::string>& lst) {
     return res;
 }
 
+
+/*
+This function converts a list of Control System Constants into a dictionary
+where the name of the CSConstant is the key, pointing to the corresponding
+value. The returned string is in JSON format
+*/
 inline String constantListToString(const std::vector<CSConstant>& lst) {
-    String res = "[";
+    String res = "{";
     for(int i=0; i<lst.size(); i++){
-        res += "{'" + String(lst[i].name.c_str()) + ": " + String(lst[i].value, 6) +  "}";
+        res += String(lst[i].name.c_str()) + ": " + String(lst[i].value, 6);
         if(i != lst.size() - 1){
-            res += ",";
+            res += ", ";
         }
     };
-    res += "]"; 
-    return res; // placeholder
+    res += "}"; 
+    return res; 
 }
 
 
-inline String DroneStateToString(const DroneState& state) {
+/*
+This produces a string in JSON format that describes the current state
+of the drone. 
+*/
+inline String droneStateToString(const DroneState& state) {
     String res = "{";
 
     res += "\n\"opTime\": " + String(state.opTime);
@@ -97,6 +112,8 @@ inline String DroneStateToString(const DroneState& state) {
     res += ",\n\"controlSystemList\": " + stringListToString(state.controlSystemList);
     res += ",\n\"currentControlSystem\": \"" + String(state.currentControlSystem.c_str()) + "\"";
     res += ",\n\"controlSystemVals\": " + constantListToString(state.controlSystemVals);
+    
+    res += ",\n\"activeFlags\": " + stringListToString(state.activeFlags);
 
     res += ",\n\"refreshRate\": " + String(state.refreshRate, 6);
     res += ",\n\"packetAge\": " + String(state.packetAge, 6);

@@ -2,6 +2,7 @@
 #define COMMAND_H
 
 #include "DroneOperation.h"
+#include "DroneState.h"
 
 class Command{
     /*
@@ -10,6 +11,8 @@ class Command{
     */
 
     public:
+        virtual ~Command() = default;
+
         /*
         What type of action the drone will take as a result of the 
         command
@@ -41,14 +44,21 @@ class Command{
         An abstract method which should return the string version
         of the command WITHOUT the timestamp
         */
-        virtual String toPrettyString();
+        virtual String toPrettyString() = 0;
+
+        /*
+        Recieves the current drone state as an input, and then returns
+        a new version of the drone state, modified according to the 
+        command
+        */
+       virtual DroneState enactCommand(DroneState currentState) = 0;
 
 
         /*
         Given a correctly formatted command in string form, returns
         a drone command class with the same data
         */
-        static Command fromString(String line);
+        static Command* commandFromString(String line);
 
         
 

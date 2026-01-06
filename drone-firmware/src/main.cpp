@@ -2,6 +2,9 @@
 
 #include "ProgramConstants.h"
 #include "Web/WebManager.h"
+#include "DroneOperation.h"
+#include "Commands/PassiveCommand.h"
+#include "PhysicalComponents/PWMComponent.h"
 #include <time.h>
 #include "esp_log.h"
 
@@ -15,14 +18,19 @@ int opTimeStart = 0; // The number of milliseconds between the board being power
                      // on and the last time the drone was armed
 
 
+PWMComponent greenChannel = PWMComponent(25, "Green Channel of RGB LED");
+PWMComponent blueChannel = PWMComponent(32, "Blue Channel of RGB LED");
+
+int startVal = 0;
+
 void setup() {
   Serial.begin(9600);
   esp_log_level_set("wifi", ESP_LOG_NONE);
   server.initialise();
-  // server.syncTime();
+  server.syncTime();
 
+  Serial.println("Done!");
 
-  delay(1000);
 }
 
 
@@ -32,6 +40,29 @@ void loop() {
 
   server.updateDroneState(currentState);
   server.tick();
-  delay(50);
+
+  if(currentState.isEStopped){
+    Serial.println("ESTOPPED");
+    blueChannel.setValue(255);
+    greenChannel.setValue(0);
+  }else{
+    if(currentState.isArmed){
+      Serial.println("ARMED");
+      blueChannel.setValue(0);
+      greenChannel.setValue(255);
+    }else{
+      Serial.println("DISARMED");
+      blueChannel.setValue(255);
+      greenChannel.setValue(255);
+    }
+  }
+
+  if(server.newCommand){
+    Command* newCommand = server.getLastCommand();
+    currentState = newCommand->enactCommand(currentState);
+
+  }
+  delay(10);
+
 }
 

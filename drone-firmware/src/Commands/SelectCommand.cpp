@@ -7,5 +7,10 @@ SelectCommand::SelectCommand(int issueTime, DroneOperation op, String selectedVa
 
 String SelectCommand::toPrettyString(){
     return droneOpToString(operation) + " " + selectedValue;
-
 };
+
+
+DroneState SelectCommand::enactCommand(DroneState currentState){
+    //TODO
+    return currentState;
+}

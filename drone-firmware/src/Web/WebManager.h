@@ -48,7 +48,12 @@ class WebManager{
         /*
         Returns the most recent command recieved by the drone
         */
-        Command getLastCommand();
+        Command* getLastCommand();
+
+        /*
+        Checks if there is a new command that has not yet been read by `getLastCommand()`
+        */
+        bool newCommand = false;
 
 
 
@@ -61,11 +66,15 @@ class WebManager{
 
         DroneState currentDroneState; // The most recent drone state, to be communicated to 
                                       // whichever device makes a GET request
-        Command lastRecievedCommand = PassiveCommand(0, EMERGENCY_STOP); // The last command which was recieved by the server
 
+        Command* lastRecievedCommand = new PassiveCommand(0, EMERGENCY_STOP); // The last command which was recieved by the server
 
         // This is a function that sends a connected client the value stored in 'currentDroneState' 
         void sendDroneState(WiFiClient client);
+
+
+        // This function handles when a POST request containing a new command is made to the drone
+        void handlePostRequest(WiFiClient client, String headers);
 
 
         // This method returns a HTTP error in the case that the http request was incorrect 

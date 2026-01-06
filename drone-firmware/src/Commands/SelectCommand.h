@@ -24,7 +24,9 @@ class SelectCommand : public Command{
 
         SelectCommand(int issueTime, DroneOperation op, String selectedValue);
 
-        String toPrettyString();
+        String toPrettyString() override;
+
+        DroneState enactCommand(DroneState currentState);
 };
 
 #endif

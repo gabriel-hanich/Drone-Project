@@ -6,7 +6,7 @@ const Flags:React.FC = ()=>{
         <div className="wrapper">
             <div className="warning-container">
                 <h3 className="warning-header">Warning!!!</h3>
-                <p>These flags enable features that are experimental, or for debugging. They are not meant to be enabled for typical operation. Modifying these flags may result in crashes (of both the software and hardware) or instability.</p>
+                <p>These flags enable features that are experimental, or designed for debugging/testing. They are not meant to be enabled for typical operation. Modifying these flags may result in (hardware and software) crashes</p>
                 <p>Flags can only be changed when the drone is disarmed and not emergency stopped</p>
             </div>
             <div className="flag-container">

@@ -35,6 +35,8 @@ class SetValueCommand : public Command{
 
         String toPrettyString();
 
+        DroneState enactCommand(DroneState currentState);
+
 
 
 };

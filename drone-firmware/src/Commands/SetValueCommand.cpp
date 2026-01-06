@@ -9,3 +9,9 @@ SetValueCommand::SetValueCommand(int issueTime, DroneOperation operation, String
 String SetValueCommand::toPrettyString(){
     return droneOpToString(operation) + " " + key + " " + String(value, 8);
 };
+
+
+DroneState SetValueCommand::enactCommand(DroneState currentState){
+    //TODO
+    return currentState;
+}

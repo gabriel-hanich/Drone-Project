@@ -1,7 +1,7 @@
 #include "Component.h"
 #include <esp32-hal-gpio.h>
 
-#include <Arduino.h>;
+#include <Arduino.h>
 
 /*
 pinNumber is the pin which directly controls the physical component 
@@ -11,9 +11,8 @@ pinType Is an integer describing whether the pin is an input or output
 */
 Component::Component(int pinNumber, String name, int pinType)
     : pinNumber(pinNumber),
-      name(name)
-{
-
+      name(name){
+        
     // This initialises the pin as either an input or output
     pinMode(this->pinNumber, pinType);
 }

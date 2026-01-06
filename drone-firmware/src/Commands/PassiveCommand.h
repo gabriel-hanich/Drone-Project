@@ -23,7 +23,9 @@ class PassiveCommand: public Command{
     public:
         PassiveCommand(int time, DroneOperation op);
 
-        String toPrettyString();
+        String toPrettyString() override;
+
+        DroneState enactCommand(DroneState currentState) override;
 };
 
 

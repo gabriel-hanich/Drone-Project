@@ -31,7 +31,9 @@ class ActiveCommand: public Command{
         
         ActiveCommand(int time, DroneOperation operation, DroneProperty property, double value);
 
-        String toPrettyString();
+        String toPrettyString() override;
+
+        DroneState enactCommand(DroneState currentState) override;
 };
 
 #endif

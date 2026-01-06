@@ -106,8 +106,12 @@ void WebManager::tick(){
             }
         }
 
+
         if(request.startsWith("GET")){
             sendDroneState(client);
+        }
+        if(request.startsWith("POST")){
+            handlePostRequest(client, request);
         }
         else{
             sendErrorHTTP(client);
@@ -123,10 +127,15 @@ void WebManager::updateDroneState(DroneState newState){
     currentDroneState = newState;
 }
 
+Command* WebManager::getLastCommand(){
+    newCommand = false;
+    return lastRecievedCommand;
+}
+
 
 void WebManager::sendDroneState(WiFiClient client){
     Serial.println("Handling GET Request");
-    String jsonData = DroneStateToString(currentDroneState);
+    String jsonData = droneStateToString(currentDroneState);
 
     client.println("HTTP/1.1 200 OK");
     client.println("Content-Type: application/json");
@@ -135,7 +144,27 @@ void WebManager::sendDroneState(WiFiClient client){
     client.println(jsonData.length());
     client.println();
     client.print(jsonData);
+    Serial.println("Sent JSON data to client");
 }
+
+void WebManager::handlePostRequest(WiFiClient client, String headers){
+    Serial.println("HANDLING POST REQUEST");
+    size_t startIndex = headers.indexOf("command=") + 8;
+    String command = "";
+    for(int i=startIndex; i<headers.length(); i++){
+        if(headers.charAt(i) == ' '){
+            break;
+        }
+        command += headers.charAt(i);
+    }
+    command.replace("%20", " ");
+    Command* incomingCommand = Command::commandFromString(command);
+    this->lastRecievedCommand = incomingCommand;
+    newCommand = true; 
+
+    client.println("HTTP/1.1 200 OK");
+    client.println("");
+};
 
 void WebManager::sendErrorHTTP(WiFiClient client){
     client.println("HTTP/1.1 405 Method Not Allowed");
