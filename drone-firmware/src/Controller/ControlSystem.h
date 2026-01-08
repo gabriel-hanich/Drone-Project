@@ -21,13 +21,9 @@ class ControlSystem{
         */
         const String name;
 
-        /*
-        A string describing what version of the control system this is
-        */
-        const String version;
 
         // The constructor
-        ControlSystem(String name, String version, std::vector<CSConstant> initialConstants);
+        ControlSystem(String name, std::vector<CSConstant> initialConstants);
 
 
         /*
@@ -48,7 +44,7 @@ class ControlSystem{
         the existing drone state, and returns the new state, with updated values
         for the different components
         */
-        virtual DroneState updateState(DroneState state);
+        virtual DroneState updateState(DroneState state) = 0;
 
 
     

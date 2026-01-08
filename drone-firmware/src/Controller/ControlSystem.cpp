@@ -2,9 +2,8 @@
 #include "Arduino.h"
 #include <vector>
 
-ControlSystem::ControlSystem(String name, String version, std::vector<CSConstant> initialConstants)
+ControlSystem::ControlSystem(String name, std::vector<CSConstant> initialConstants)
     : name(name),
-      version(version),
       constants(initialConstants) {};
 
 

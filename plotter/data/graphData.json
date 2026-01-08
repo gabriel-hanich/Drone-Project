@@ -1,0 +1,43 @@
+{
+    "version": "0.0.1",
+    "graphs": [
+        {
+            "name": "Rotational Axes",
+            "type": "Line graph",
+            "xAxisExp": "state.time",
+            "seriesExps": [
+                "state.pitch",
+                "state.roll",
+                "state.yaw"
+            ],
+            "seriesLabels": [
+                "pitch",
+                "roll",
+                "yaw"
+            ],
+            "seriesColors": [
+                "#940d0d",
+                "#2403fc",
+                "#d97d14"
+            ],
+            "xAxisLabel": "time",
+            "yAxisLabel": "degrees",
+            "maxDP": 20
+        },
+        {
+            "name": "Pitch vs Pitch",
+            "type": "Scatter plot",
+            "xAxisExp": "state.pitch",
+            "seriesExps": [
+                "state.pitch"
+            ],
+            "seriesLabels": [],
+            "seriesColors": [
+                "#940d0d"
+            ],
+            "xAxisLabel": "Pitch",
+            "yAxisLabel": "Pitch",
+            "maxDP": -1
+        }
+    ]
+}
