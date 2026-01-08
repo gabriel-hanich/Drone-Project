@@ -1,6 +1,6 @@
 import { ChangeEvent, useState } from "react";
 import { sendCommandObject, useConnection } from "../../../services/DroneConnection";
-import { ControlSelectCommand, ControlSetCommand } from "../../../types";
+import { DroneOperation, SelectValueCommand, SetValueCommand } from "../../../types";
 import "./ControlSystem.css"
 
 const ControlSystem:React.FC = ()=>{
@@ -21,7 +21,7 @@ const ControlSystem:React.FC = ()=>{
     function changeControlSystem(){
         if(!isEStopped && !isArmed){
             var e = document.getElementById("control-chooser");
-            let selectCommand:ControlSelectCommand = new ControlSelectCommand(Date.now(), (e as any).value);
+            let selectCommand:SelectValueCommand = new SelectValueCommand(Date.now(), DroneOperation.CONTROL_SELECT, (e as any).value);
             sendCommandObject(selectCommand);
         }
     }
@@ -71,7 +71,7 @@ const ControlSystem:React.FC = ()=>{
     function updateFields(){
         Object.keys(newControllerParams).forEach((thisKey)=>{
             if(newControllerParams[thisKey] != controllerParameters[thisKey]){
-                let droneCmd = new ControlSetCommand(Date.now(), thisKey, newControllerParams[thisKey]);
+                let droneCmd = new SetValueCommand(Date.now(), DroneOperation.CONTROL_SET, thisKey, newControllerParams[thisKey]);
                 sendCommandObject(droneCmd);
             }
         });

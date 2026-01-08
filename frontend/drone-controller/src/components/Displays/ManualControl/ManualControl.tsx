@@ -14,27 +14,47 @@ const ManualControl:React.FC = ()=>{
     }
 
 
-
     return(
         <>
             <div className="wrapper control-wrapper">
                 <div className="control-container">
                     <div className="set-container" id="setcontup">
-                        <img src={triangle} alt="Triangle pointing up" className="set-img" id="set-up" onMouseDown={() => sendCommandString("SET XVEL_SETPOINT " + speed.toString())} onMouseUp={() => sendCommandString("SET XVEL_SETPOINT 0")}/>
+                        <img src={triangle} 
+                            alt="Triangle pointing up"
+                            className="set-img" 
+                            id="set-up" 
+                            onMouseDown={() => sendCommandObject(new ActiveCommand(Date.now(), DroneOperation.SET, DroneProperty.X_ACC_SETPOINT, speed))} 
+                            onMouseUp={() => sendCommandObject(new ActiveCommand(Date.now(), DroneOperation.SET, DroneProperty.X_ACC_SETPOINT, 0))}
+                            />
                     </div>
                     <div className="set-container" id="setcontright">
-                        <img src={triangle} alt="Triangle pointing right" className="set-img" id="set-right" onMouseDown={() => sendCommandString("SET YVEL_SETPOINT " + speed.toString())} onMouseUp={() => sendCommandString("SET YVEL_SETPOINT 0")}/>
+                        <img src={triangle} 
+                            alt="Triangle pointing right" 
+                            className="set-img" 
+                            id="set-right" 
+                            onMouseDown={() => sendCommandObject(new ActiveCommand(Date.now(), DroneOperation.SET, DroneProperty.Y_ACC_SETPOINT, speed))} 
+                            onMouseUp={() => sendCommandObject(new ActiveCommand(Date.now(), DroneOperation.SET, DroneProperty.Y_ACC_SETPOINT, 0))}/>
                     </div>
                     <div className="set-container" id="setconthover">
                         <div className="set-elem" id="set-hover" onMouseDown={() => sendCommandString("HOVER")}>
                             <p className="set-text">Hover</p>
                         </div>
-                    </div>
+                    </div> 
                     <div className="set-container" id="setcontleft">
-                        <img src={triangle} alt="Triangle pointing left" className="set-img" id="set-left" onMouseDown={() => sendCommandString("SET YVEL_SETPOINT " + (-1 * speed).toString())} onMouseUp={() => sendCommandString("SET YVEL_SETPOINT 0")}/>
+                        <img src={triangle}
+                        alt="Triangle pointing left"
+                        className="set-img" 
+                        id="set-left" 
+                        onMouseDown={() => sendCommandObject(new ActiveCommand(Date.now(), DroneOperation.SET, DroneProperty.Y_ACC_SETPOINT, (-1 * speed)))} 
+                        onMouseUp={() => sendCommandObject(new ActiveCommand(Date.now(), DroneOperation.SET, DroneProperty.Y_ACC_SETPOINT, 0))}/>
                     </div>
                     <div className="set-container" id="setcontdown">
-                        <img src={triangle} alt="Triangle pointing down" className="set-img" id="set-down" onMouseDown={() => sendCommandString("SET XVEL_SETPOINT " + (-1 * speed).toString())} onMouseUp={() => sendCommandString("SET XVEL_SETPOINT 0")}/>
+                        <img src={triangle} 
+                        alt="Triangle pointing down" 
+                        className="set-img" 
+                        id="set-down" 
+                        onMouseDown={() => sendCommandObject(new ActiveCommand(Date.now(), DroneOperation.SET, DroneProperty.X_ACC_SETPOINT, -1 * speed))} 
+                        onMouseUp={() => sendCommandObject(new ActiveCommand(Date.now(), DroneOperation.SET, DroneProperty.X_ACC_SETPOINT, 0))}/>
                     </div>
                 </div>
                 <div className="elevation-container">

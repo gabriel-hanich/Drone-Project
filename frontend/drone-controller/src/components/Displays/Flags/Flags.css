@@ -16,3 +16,30 @@ table.flag-table td, th{
     padding: 5px 10px 5px 10px;
     border: 1px white solid;
 }
+
+.active-row{
+    background-color: rgba(255, 255, 255, 0.2);
+}
+
+.flag-toggle{
+    background: rgba(255, 255, 255, 0);
+    border: 4px #20aed1 solid;
+    border-radius: 2px;
+    color: #fff;
+    cursor: pointer;
+}
+
+.flag-toggle:hover{
+    background: rgba(255, 255, 255, 0.2);
+}
+
+.disabled-toggle{
+    cursor:not-allowed !important;
+    background: rgba(0, 0, 0, 0.2);
+    opacity: 0.5;
+}
+
+.disabled-toggle:hover{
+    background: rgba(0, 0, 0, 0.2) !important;
+}
+

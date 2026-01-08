@@ -19,6 +19,7 @@ export interface DroneConnection{
 
 export interface DroneData{
     opTime: number;
+    epochTime: number;
 
     isArmed: boolean;
     isEStopped: boolean;
@@ -28,39 +29,42 @@ export interface DroneData{
     currentControlSystem: String;
     controlSystemVals: any;
 
-    // ms
+    activeFlags: String[];
+
     refreshRate: number;
-    packetAge:number;
-        
-    // degree/radian?
+    packetAge: number;
+
     pitch: number;
     roll: number;
     yaw: number;
-
     pitchSetPoint: number;
     rollSetPoint: number;
     yawSetPoint: number;
 
-    // All in ms^-1
-    xVel: number;
-    yVel: number;
-    zVel: number;
+    pitchAcc: number;
+    rollAcc: number;
+    yawAcc: number;
+    pitchAccSetPoint: number;
+    rollAccSetPoint: number;
+    yawAccSetPoint: number;
 
-    xVelSetPoint:number;
-    yVelSetPoint:number;
-    zVelSetPoint:number;
+    xAcc: number;
+    yAcc: number;
+    zAcc: number;
+    xAccSetPoint: number;
+    yAccSetPoint: number;
+    zAccSetPoint: number;
 
-    // m
     elevation: number;
-
     elevationSetPoint: number;
 
-    //
-    throttle: number;
-    
-    //
-    xFinDeflection: number;
-    yFinDefilection: number; 
+    dMotor1Throttle: number;
+    dMotor2Throttle: number;
+
+    fin1Deflection: number;
+    fin2Deflection: number;
+    fin3Deflection: number;
+    fin4Deflection: number;
 }
 
 export enum DroneOperation{
@@ -74,24 +78,27 @@ export enum DroneOperation{
     START_RECORD = "START_RECORD",
     END_RECORD = "END_RECORD",
     CONTROL_SELECT = "CONTROL_SELECT",
-    CONTROL_SET = "CONTROL_SET" 
+    CONTROL_SET = "CONTROL_SET",
+    FLAG_SET = "FLAG_SET"
 }
 
 export enum DroneProperty{
-    ROLL = "ROLL",
+PITCH_SETPOINT = "PITCH_SETPOINT",
     ROLL_SETPOINT = "ROLL_SETPOINT",
-    PITCH = "PITCH",
-    PITCH_SETPOINT = "PITCH_SETPOINT",
-    YAW = "YAW",
     YAW_SETPOINT = "YAW_SETPOINT",
-    XVEL = "XVEL",
-    XVEL_SETPOINT = "XVEL_SETPOINT",
-    YVEL = "YVEL",
-    YVEL_SETPOINT = "YVEL_SETPOINT",
-    ZVEL = "ZVEL",
-    ZVEL_SETPOINT = "ZVEL_SETPOINT",
-    ELEVATION = "ELEVATION",
-    ELEVATION_SETPOINT = "ELEVATION_SETPOINT"
+    PITCH_ACC_SETPOINT = "PITCH_ACC_SETPOINT",
+    ROLL_ACC_SETPOINT = "ROLL_ACC_SETPOINT",
+    YAW_ACC_SETPOINT = "YAW_ACC_SETPOINT",
+    X_ACC_SETPOINT = "X_ACC_SETPOINT",
+    Y_ACC_SETPOINT = "Y_ACC_SETPOINT",
+    Z_ACC_SETPOINT = "Z_ACC_SETPOINT",
+    ELEVATION_SETPOINT = "ELEVATION_SETPOINT",
+    D_MOTOR1_THROTTLE = "D_MOTOR1_THROTTLE",
+    D_MOTOR2_THROTTLE = "D_MOTOR2_THROTTLE",
+    FIN1_DEFLECTION = "FIN1_DEFLECTION",
+    FIN2_DEFLECTION = "FIN2_DEFLECTION",
+    FIN3_DEFLECTION = "FIN3_DEFLECTION",
+    FIN4_DEFLECTION = "FIN4_DEFLECTION"
 }
 
 
@@ -130,13 +137,13 @@ export abstract class DroneCommand{
 
         if(chosenDroneOp == DroneOperation.CONTROL_SELECT){
             let chosenControlSystem = lineElems[2];
-            return new ControlSelectCommand(time, chosenControlSystem);
+            return new SelectValueCommand(time, chosenDroneOp, chosenControlSystem);
         }
 
-        if(chosenDroneOp == DroneOperation.CONTROL_SET){
+        if(chosenDroneOp == DroneOperation.CONTROL_SET || chosenDroneOp == DroneOperation.FLAG_SET){
             let chosenControlVariable = lineElems[2];
             let chosenControlValue = parseFloat(lineElems[3].toString());
-            return new ControlSetCommand(time, chosenControlVariable, chosenControlValue);
+            return new SetValueCommand(time, chosenDroneOp, chosenControlVariable, chosenControlValue);
         }
 
         
@@ -145,7 +152,6 @@ export abstract class DroneCommand{
 }
 
 export class PassiveCommand extends DroneCommand{
-    
     toPrettyString(): String {
         return this.operation.toString();
     }
@@ -170,102 +176,82 @@ export class ActiveCommand extends DroneCommand{
 
 
 // Sets the value associated with a control system
-export class ControlSetCommand extends DroneCommand{
+export class SetValueCommand extends DroneCommand{
     controlVariable:String;
     amount:number;
 
-    constructor(time:number, controlVariable:String, amount:number){
-        super(DroneOperation.CONTROL_SET, time);
+    constructor(time:number, operation:DroneOperation, controlVariable:String, amount:number){
+        super(operation, time);
         this.controlVariable = controlVariable;
         this.amount = amount;
     }
     toPrettyString(): String {
-        return "CONTROL_SET " + this.controlVariable + " " + this.amount;
+        return this.operation.toString() + " " + this.controlVariable + " " + this.amount;
     }
 }
 
-export class ControlSelectCommand extends DroneCommand{
+export class SelectValueCommand extends DroneCommand{
     controlName:String;
 
-    constructor(time: number, controlName:String){
-        super(DroneOperation.CONTROL_SELECT, time);
+    constructor(time: number, operation:DroneOperation, controlName:String){
+        super(operation, time);
         this.controlName = controlName;
     }
 
     toPrettyString(): String {
-        return "CONTROL_SELECT " + this.controlName;
+        return this.operation.toString()  + " " + this.controlName;
     }
 }
 
 
+var initialDroneData:DroneData = {
+    opTime:0,
+    epochTime:0,
 
-function generateRandomDroneCommand(): DroneCommand{
-    let droneOps: String[] = ["ARM","DISARM","EMERGENCY_STOP","HOVER","RESET","SET","START_RECORD","END_RECORD"];
-    let chosenDroneOp: String = droneOps[Math.floor(Math.random() * droneOps.length)];
-    if(chosenDroneOp == "SET" || chosenDroneOp == "RESET"){
-        let chosenAmount = Math.random() * 10;
-        let parameters: String[] = ["ROLL","ROLL_SETPOINT","PITCH_SETPOINT", "YAW_SETPOINT","XVEL_SETPOINT","YVEL_SETPOINT","ZVEL_SETPOINT", "ELEVATION_SETPOINT"];
-        let chosenParameter = parameters[Math.floor(Math.random() * parameters.length)];
-        return DroneCommand.fromString(chosenDroneOp + " " + chosenParameter + " " + chosenAmount.toString());
-    }
-    return DroneCommand.fromString(chosenDroneOp);
-}
+    isArmed:false,
+    isEStopped:true,
+    lastInstruction:"0 EMERGENCY_STOP",
 
-function generateRandomDroneData():DroneData{
-    return {
-        opTime: 0,
-        isArmed: true,
-        isEStopped: false,
-        lastInstruction: generateRandomDroneCommand().toString(),
+    controlSystemList:["option 1", "option 2", "option 3"],
+    currentControlSystem:"option 1",
+    controlSystemVals:[{"name": "a", "value": 1}, {"name": "b", "value": 2}, {"name": "c", "value": 3}],
 
-        refreshRate: Math.random(),
-        packetAge: Math.random(),
+    activeFlags:[],
 
-        controlSystemList: ["default"],
-        currentControlSystem: "default",
-        controlSystemVals: {},
-        
-        pitch: Math.random() * 90 - 45,
-        roll: Math.random() * 90 - 45,
-        yaw: Math.random() * 90 - 45,
+    refreshRate:0,
+    packetAge:0,
 
-        pitchSetPoint: Math.random() * 90 - 45,
-        rollSetPoint: Math.random() * 90 - 45,
-        yawSetPoint: Math.random() * 90 - 45,
+    pitch:0,
+    roll:0,
+    yaw:0,
+    pitchSetPoint:0,
+    rollSetPoint:0,
+    yawSetPoint:0,
 
-        xVel: (Math.random() - 0.5) * 5,
-        yVel: (Math.random() - 0.5) * 5,
-        zVel: (Math.random() - 0.5) * 5,
+    pitchAcc:0,
+    rollAcc:0,
+    yawAcc:0,
+    pitchAccSetPoint:0,
+    rollAccSetPoint:0,
+    yawAccSetPoint:0,
 
-        xVelSetPoint: (Math.random() - 0.5) * 5,
-        yVelSetPoint: (Math.random() - 0.5) * 5,
-        zVelSetPoint: (Math.random() - 0.5) * 5,
+    xAcc:0,
+    yAcc:0,
+    zAcc:0,
+    xAccSetPoint:0,
+    yAccSetPoint:0,
+    zAccSetPoint:0,
 
-        elevation: Math.random() * 10,
-        elevationSetPoint: Math.random() * 10,
+    elevation:0,
+    elevationSetPoint:0,
 
-        throttle: Math.random(),
-        
-        xFinDeflection: Math.random(),
-        yFinDefilection: Math.random(),
-    }
-}
+    dMotor1Throttle:0,
+    dMotor2Throttle:0,
 
-export function generateRandomDroneConnection():DroneConnection{
-    return {
-        backendURL: "localhost:4200",
-        droneURL: "localhost:3000",
-        backendConnected: true,
-        droneConnected: true,
-        pollingRate: 100,
-        isRecording: false,
-        
-        pastCommands: [],
-        droneFirmwareVersion: "0.1.0",
-        backendFirmwareVersion: "0.1.0",
-        frontendFirmwareVersion: "0.1.0",
-        droneInfo:generateRandomDroneData()
-    }
+    fin1Deflection:0,
+    fin2Deflection:0,
+    fin3Deflection:0,
+    fin4Deflection:0,
 }
 
 export var initialConnection:DroneConnection = {
@@ -280,5 +266,5 @@ export var initialConnection:DroneConnection = {
         droneFirmwareVersion: "",
         backendFirmwareVersion: "",
         frontendFirmwareVersion: "0.1.0",
-        droneInfo:generateRandomDroneData()
+        droneInfo:initialDroneData,
 }

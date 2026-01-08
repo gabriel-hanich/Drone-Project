@@ -1,6 +1,27 @@
+import { sendCommandObject, useConnection } from "../../../services/DroneConnection";
+import { DroneCommand, DroneOperation, SetValueCommand } from "../../../types";
 import "./Flags.css"
 
 const Flags:React.FC = ()=>{
+    const isArmed = useConnection().droneInfo.isArmed;
+    const isEStopped = useConnection().droneInfo.isEStopped;
+    const activeFlags = useConnection().droneInfo.activeFlags;
+
+    const flagNames: String[] = ["HARDWARE_TESTING", "LOW_POWER"]
+
+    const flagDescriptions = [
+        (<p><b>Disables the control system</b> to enable manual control of the motors. Drive motors can only be set to a maximum of 0.1 (aka 10% throttle) to avoid accidents</p>),
+        (<p>Disables most power and all operations of the drone. The ESP32 will remain on and sit in a low power state until the flag is disabled</p>)
+    
+    ] 
+
+    function toggleFlag(flagName: String): void{
+        let setVal: number = (activeFlags.includes(flagName) ? 0 : 1);
+        if(!isEStopped && !isArmed){
+            sendCommandObject(new SetValueCommand(Date.now(), DroneOperation.FLAG_SET, flagName, setVal)); 
+        }
+        
+    };  
 
     return (
         <div className="wrapper">
@@ -17,24 +38,25 @@ const Flags:React.FC = ()=>{
                         <th>Enabled</th>
                         <th>Toggle</th>
                     </tr>
-                    <tr className="flag-row">
-                        <td>HARDWARE_TESTING</td>
-                        <td>Lorem ipsum dolor sit amet consectetur adipisicing elit. Laboriosam nemo illo nisi ipsa voluptates accusantium! Optio saepe ipsum culpa ipsa?</td>
-                        <td>False</td>
-                        <td><button>Toggle</button></td>
-                    </tr>
-                    <tr className="flag-row">
-                        <td>HARDWARE_TESTING</td>
-                        <td>Lorem ipsum dolor sit amet consectetur adipisicing elit. Laboriosam nemo illo nisi ipsa voluptates accusantium! Optio saepe ipsum culpa ipsa?</td>
-                        <td>False</td>
-                        <td><button>Toggle</button></td>
-                    </tr>
-                    <tr className="flag-row">
-                        <td>HARDWARE_TESTING</td>
-                        <td>Lorem ipsum dolor sit amet consectetur adipisicing elit. Laboriosam nemo illo nisi ipsa voluptates accusantium! Optio saepe ipsum culpa ipsa?</td>
-                        <td>False</td>
-                        <td><button>Toggle</button></td>
-                    </tr>
+
+                    {
+                        flagNames.map((fName, index)=>{
+                            return (
+                                <tr className={"flag-row " + (activeFlags.includes(fName) ? 'active-row' : '')}>
+                                    <td>{fName}</td>
+                                    <td>{flagDescriptions[index]}</td>
+                                    <td>
+                                        {
+                                            activeFlags.includes(fName) ? <p>True</p> : <p>False</p>
+                                        }
+                                    </td>
+                                    <td><button className={"flag-toggle " + (!isArmed && !isEStopped ? '' : 'disabled-toggle')} onClick={() => {toggleFlag(fName)}}>Toggle</button></td>
+                                </tr>
+                            )
+                        })
+                    }
+
+                    
                 </table>
             </div>
         </div>
