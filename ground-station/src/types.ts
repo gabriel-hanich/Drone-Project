@@ -26,7 +26,7 @@ export interface DroneData{
 
     controlSystemList: String[];
     currentControlSystem: String;
-    controlSystemVals: any;
+    controlSystemVals: CSConstant[];
 
     activeFlags: String[];
 
@@ -98,6 +98,11 @@ export enum DroneProperty{
     FIN2_DEFLECTION = "FIN2_DEFLECTION",
     FIN3_DEFLECTION = "FIN3_DEFLECTION",
     FIN4_DEFLECTION = "FIN4_DEFLECTION"
+}
+
+export interface CSConstant{
+    name: String,
+    value: number
 }
 
 
@@ -242,7 +247,13 @@ export function handleCommand(state:DroneConnection, command:DroneCommand): Dron
 
     if(command.operation == DroneOperation.CONTROL_SET){
         let setCommand: SetValueCommand = command as SetValueCommand;
-        state.droneInfo.controlSystemVals[setCommand.controlVariable as any] = setCommand.amount
+        let constants:CSConstant[] = state.droneInfo.controlSystemVals;
+        constants.forEach((pair:CSConstant)=>{
+            if(pair.name == setCommand.controlVariable){
+                pair.value = setCommand.amount
+            }
+        })
+        state.droneInfo.controlSystemVals = constants
     }
 
     if(command.operation == DroneOperation.FLAG_SET){

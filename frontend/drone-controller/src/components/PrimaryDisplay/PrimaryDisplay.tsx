@@ -10,7 +10,7 @@ import Flags from "../Displays/Flags/Flags";
 import Routines from "../Displays/Routines/Routines";
 
 const PrimaryDisplay:React.FC = ()=>{
-    let [currentDisplay, setCurrentDisplay] = useState<String>("routines");
+    let [currentDisplay, setCurrentDisplay] = useState<String>("control");
 
     return(
         <>

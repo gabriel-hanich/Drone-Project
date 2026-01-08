@@ -27,7 +27,7 @@ export interface DroneData{
 
     controlSystemList: String[];
     currentControlSystem: String;
-    controlSystemVals: any;
+    controlSystemVals: CSConstant[];
 
     activeFlags: String[];
 
@@ -83,7 +83,7 @@ export enum DroneOperation{
 }
 
 export enum DroneProperty{
-PITCH_SETPOINT = "PITCH_SETPOINT",
+    PITCH_SETPOINT = "PITCH_SETPOINT",
     ROLL_SETPOINT = "ROLL_SETPOINT",
     YAW_SETPOINT = "YAW_SETPOINT",
     PITCH_ACC_SETPOINT = "PITCH_ACC_SETPOINT",
@@ -99,6 +99,11 @@ PITCH_SETPOINT = "PITCH_SETPOINT",
     FIN2_DEFLECTION = "FIN2_DEFLECTION",
     FIN3_DEFLECTION = "FIN3_DEFLECTION",
     FIN4_DEFLECTION = "FIN4_DEFLECTION"
+}
+
+export interface CSConstant{
+    name: String,
+    value: number
 }
 
 

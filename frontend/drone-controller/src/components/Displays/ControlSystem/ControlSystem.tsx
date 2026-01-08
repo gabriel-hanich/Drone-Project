@@ -1,6 +1,6 @@
-import { ChangeEvent, useState } from "react";
+import { ChangeEvent, Key, useState } from "react";
 import { sendCommandObject, useConnection } from "../../../services/DroneConnection";
-import { DroneOperation, SelectValueCommand, SetValueCommand } from "../../../types";
+import { CSConstant, DroneOperation, SelectValueCommand, SetValueCommand } from "../../../types";
 import "./ControlSystem.css"
 
 const ControlSystem:React.FC = ()=>{
@@ -9,11 +9,11 @@ const ControlSystem:React.FC = ()=>{
     let isEStopped: Boolean = useConnection().droneInfo.isEStopped;
     let isArmed: Boolean = useConnection().droneInfo.isArmed;
     let droneConnected:boolean = useConnection().droneConnected;
-    let controllerParameters: any = useConnection().droneInfo.controlSystemVals; // The controller parameters as they are on the drone
+    let controllerParameters: CSConstant[] = useConnection().droneInfo.controlSystemVals; // The controller parameters as they are on the drone
 
 
     let [searchedVal, setSearchVal] = useState<String>("");
-    let [newControllerParams, setNewControllerParams] = useState(controllerParameters); // The controller parameters as they have been set by the user
+    let [newControllerParams, setNewControllerParams] = useState<CSConstant[]>(controllerParameters); // The controller parameters as they have been set by the user
 
     let [loadFields, setLoadFields] = useState<boolean>(false); // If the button to load the fields has been pressed
 
@@ -29,12 +29,12 @@ const ControlSystem:React.FC = ()=>{
 
     // Changes a single value within the newParameters object
     function changeVal(key:String, newVal:number){
-        let newObj:any = {};
-        Object.keys(newControllerParams).forEach((thisKey)=>{
-            if(thisKey == key){
-                newObj[thisKey as any] = newVal;
+        let newObj:CSConstant[] = [];
+        newControllerParams.forEach((param)=>{
+            if(param.name == key){
+                newObj.push({"name": key, "value": newVal})
             }else{
-                newObj[thisKey as any] = newControllerParams[thisKey as any];
+                newObj.push(param)
             }
         });
 
@@ -49,32 +49,46 @@ const ControlSystem:React.FC = ()=>{
         }
     }
 
+
+    // Gets the CSConstant with a given key from a list of CS Constants
+    function getConstantValue(lst:CSConstant[], key: String):number{
+        let sVal: number = -1 
+        lst.forEach((pair:CSConstant)=>{
+            if(pair.name == key){
+                sVal = pair.value
+            }
+        })
+
+        return sVal; 
+    }
+
     // Generates the form which enables the user to modify the controller parameters
     function generateFields(){
-        return Object.keys(controllerParameters).map((key)=>{
-            if(key.includes(searchedVal.toString())){
+        return controllerParameters.map((pair:CSConstant)=>{
+            if(pair.name.includes(searchedVal.toString())){
                 return (
-                <div className={"value-item " + (newControllerParams[key] == controllerParameters[key] ? '' : 'value-changed')} key={key}>
-                    <p className="value-name">{key}</p>
-                    <button className="value-button cursor" onClick={() => changeVal(key, newControllerParams[key] - 0.1)}>-0.1</button>
-                    <button className="value-button cursor" onClick={() => changeVal(key, newControllerParams[key] - 0.01)}>-0.01</button>
-                    <input type="number" className="value-input" value={newControllerParams[key]} onChange={(e) => changeVal(key, parseFloat(e.target.value))} pattern="-?[0-9]+"/>
-                    <button className="value-button cursor" onClick={() => changeVal(key, newControllerParams[key] + 0.01)}>+0.01</button>
-                    <button className="value-button cursor" onClick={() => changeVal(key, newControllerParams[key] + 0.1)}>+0.1</button>
+                <div className={"value-item " + (getConstantValue(newControllerParams, pair.name) == pair.value ? '' : 'value-changed')} key={pair.name as Key}>
+                    <p className="value-name">{pair.name}</p>
+                    <button className="value-button cursor" onClick={() => changeVal(pair.name, getConstantValue(newControllerParams, pair.name) - 0.1)}>-0.1</button>
+                    <button className="value-button cursor" onClick={() => changeVal(pair.name, getConstantValue(newControllerParams, pair.name) - 0.01)}>-0.01</button>
+                    <input type="number" className="value-input" value={getConstantValue(newControllerParams, pair.name)} onChange={(e) => changeVal(pair.name, parseFloat(e.target.value))} pattern="-?[0-9]+"/>
+                    <button className="value-button cursor" onClick={() => changeVal(pair.name, getConstantValue(newControllerParams, pair.name) + 0.01)}>+0.01</button>
+                    <button className="value-button cursor" onClick={() => changeVal(pair.name, getConstantValue(newControllerParams, pair.name) + 0.1)}>+0.1</button>
                 </div>
                 )
             }
-        });
+        })
     }
 
     // Sends a command to the drone to update only the modified controller parameters
     function updateFields(){
-        Object.keys(newControllerParams).forEach((thisKey)=>{
-            if(newControllerParams[thisKey] != controllerParameters[thisKey]){
-                let droneCmd = new SetValueCommand(Date.now(), DroneOperation.CONTROL_SET, thisKey, newControllerParams[thisKey]);
+        newControllerParams.forEach((param:CSConstant)=>{
+            if(param.value != getConstantValue(controllerParameters, param.name)){
+                let droneCmd = new SetValueCommand(Date.now(), DroneOperation.CONTROL_SET, param.name, param.value);
                 sendCommandObject(droneCmd);
             }
         });
+
     }
 
     // Manages setting the parameter values based on an uploaded csv file
@@ -106,9 +120,11 @@ const ControlSystem:React.FC = ()=>{
     // Creates a csv file using the current `newParameters`
     function downloadVals(){
         let outputString: string = "";
-        Object.keys(newControllerParams).forEach((key) => {
-            outputString = outputString + key + "," + newControllerParams[key].toString() + "\n"
+
+        newControllerParams.forEach((param)=>{
+            outputString = outputString + param.name + "," + param.value.toString() + "\n"
         });
+
         const blob = new Blob([outputString], {type: "text/csv"});
         
         
