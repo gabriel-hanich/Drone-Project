@@ -1,6 +1,7 @@
 import random
 import time
-
+import urllib.request
+import json
 class DroneState:
     """
     This class is used to store all the incoming drone. It is also able to fetch new
@@ -54,8 +55,13 @@ class DroneState:
 
     def getNewData(self):
         """Downloads new data from the provided URL and updates the internal values"""
-        #TODO Write it when the backend code is written
-        self.randomiseVals()        
+        with urllib.request.urlopen(self.dataURL) as backendPage:
+            rawData = json.loads(backendPage.read().decode())
+
+        
+        for key, value in rawData["droneInfo"].items():
+            setattr(self, key, value)
+        self.time = time.time();
 
 
     def randomiseVals(self):

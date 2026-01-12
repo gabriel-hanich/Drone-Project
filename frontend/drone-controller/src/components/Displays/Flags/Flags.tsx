@@ -1,5 +1,5 @@
 import { sendCommandObject, useConnection } from "../../../services/DroneConnection";
-import { DroneCommand, DroneOperation, SetValueCommand } from "../../../types";
+import { DroneOperation, SetValueCommand } from "../../../types";
 import "./Flags.css"
 
 const Flags:React.FC = ()=>{
@@ -7,11 +7,12 @@ const Flags:React.FC = ()=>{
     const isEStopped = useConnection().droneInfo.isEStopped;
     const activeFlags = useConnection().droneInfo.activeFlags;
 
-    const flagNames: String[] = ["HARDWARE_TESTING", "LOW_POWER"]
+    const flagNames: String[] = ["HARDWARE_TESTING", "LOW_POWER", "ROUTINE_STATE_CONTROL"]
 
     const flagDescriptions = [
         (<p><b>Disables the control system</b> to enable manual control of the motors. Drive motors can only be set to a maximum of 0.1 (aka 10% throttle) to avoid accidents</p>),
-        (<p>Disables most power and all operations of the drone. The ESP32 will remain on and sit in a low power state until the flag is disabled</p>)
+        (<p><b>NOT IMPLEMENTED</b> Disables most power and all operations of the drone. The ESP32 will remain on and sit in a low power state until the flag is disabled</p>),
+        (<p>Allows any uploaded Routines to access commands that affect the drone safety state. Enabling this flag permits the routines to arm/disarm the drone, as well as triggering/restarting the Emergency Stop</p>)
     
     ] 
 

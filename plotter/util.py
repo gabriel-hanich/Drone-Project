@@ -245,7 +245,7 @@ def plotLineGraph(state, xAxisExp, seriesExps, xAxisLabel, yAxisLabel, seriesLab
         plt.xlabel(xAxisLabel)
         plt.ylabel(yAxisLabel)
 
-        state.randomiseVals()
+        state.getNewData()
         plt.pause(0.25)
 
 def plotScatterPlot(state, xAxisExp, seriesExps, xAxisLabel, yAxisLabel, seriesLabels, seriesColors):

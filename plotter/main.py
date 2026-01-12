@@ -7,6 +7,7 @@ import matplotlib.pyplot as plt
 
 menu = MenuDepth.WELCOME
 version = "0.0.2"
+backendURL = "http://localhost:8080/"
 print(util.bigLogo)
 print(f"Version {version}")
 while True:
@@ -29,7 +30,7 @@ while True:
             continue;
         
         # Allows the user to input expressions for the x-axis, and all the series 
-        state = DroneState("FAKE URL")
+        state = DroneState(backendURL)
         xAxisExp = util.inputValidExpression(state, "Write an expression for the X-Axis\n - Write HELP for help and BACK to go back\n", util.printAxisHelpText)
         if(xAxisExp == "BACK"):
             menu = MenuDepth.WELCOME
@@ -138,7 +139,7 @@ while True:
                 chosenGraph = elmt
                 break
         
-        state = DroneState("fakeURL")
+        state = DroneState(backendURL)
 
         if(chosenGraph['type'] == 'Line graph'):
             util.plotLineGraph(

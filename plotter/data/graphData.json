@@ -1,5 +1,5 @@
 {
-    "version": "0.0.1",
+    "version": "0.0.2",
     "graphs": [
         {
             "name": "Rotational Axes",
@@ -38,6 +38,21 @@
             "xAxisLabel": "Pitch",
             "yAxisLabel": "Pitch",
             "maxDP": -1
+        },
+        {
+            "name": "X Acceleration Setpoint",
+            "type": "Line graph",
+            "xAxisExp": "state.time",
+            "seriesExps": [
+                "state.xAccSetPoint"
+            ],
+            "seriesLabels": [],
+            "seriesColors": [
+                "#940d0d"
+            ],
+            "xAxisLabel": "time",
+            "yAxisLabel": "X Acceleration",
+            "maxDP": 35
         }
     ]
 }
