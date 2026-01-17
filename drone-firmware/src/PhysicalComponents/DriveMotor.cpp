@@ -5,10 +5,20 @@
 
 DriveMotor::DriveMotor(int pinNumber, String name)
     : Component(pinNumber, name, OUTPUT),
-      throttle(0) {}
+      throttle(0),
+      motorController(pinNumber) {
 
-void DriveMotor::setSpeed(int newThrottle){
+    if(!motorController.begin(DSHOT300)){
+        Serial.println("ERROR\nThe controller for " + name + " returned an error when initialising");
+    };  
+}
+
+void DriveMotor::setSpeed(double newThrottle){
     throttle = newThrottle;
+    
+    // 2047 is the maximum throttle value, thus as newThrottle
+    // is a value from 0 to 1, dividing it by 2047 will ensure
+    // a full coverage of the speeds
+    motorController.sendThrottleValue(newThrottle / 2047);
 
-    //TODO Implement actually changing the throttle (depends on what protocol we use)
 }

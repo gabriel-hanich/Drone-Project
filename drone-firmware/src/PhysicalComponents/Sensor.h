@@ -20,23 +20,23 @@ class Sensor : public Component{
         /*
         Returns a new reading from the sensor
         */
-        virtual double takeReading();
+        virtual double takeReading() = 0;
 
         /*
         Calibrates the sensor such that the 'calibrateValue' is the new value
         for the current position of the sensor 
         */
-        virtual void calibrate(double calibrateValue);
+        virtual void calibrate(double calibrateValue) = 0;
 
         /*
         Returns the uncertainty within the sensor's reading
         */
-        virtual double getError();
+        virtual double getError() = 0;
 
         /*
         Returns the amount of time in [UNITS] to provide a reading from the sensor
         */
-       double getLatency();
+       virtual double getLatency() = 0;
 
 
     protected:

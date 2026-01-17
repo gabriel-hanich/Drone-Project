@@ -29,6 +29,7 @@ var outputdata:DroneConnection = initialConnection
 
 app.get("/", (req, res)=>{
     recordManager.takeData(outputdata.droneInfo);
+    outputdata.droneInfo.packetTime = Date.now();
     res.send(JSON.stringify(outputdata));
 });
 

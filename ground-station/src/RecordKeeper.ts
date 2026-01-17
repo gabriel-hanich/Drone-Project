@@ -1,4 +1,4 @@
-import { DroneData } from "./types";
+import { CSConstant, DroneData } from "./types";
 const fs = require("node:fs");
 
 export class RecordKeeper{
@@ -27,6 +27,10 @@ export class RecordKeeper{
                 this.keyList.push(val.toString());
             }
         });
+        initialData.controlSystemVals.forEach((constant:CSConstant)=>{
+            this.controlKeyList.push(constant.name.toString());
+        })
+
 
         let controlKeys = Object.keys(initialData.controlSystemVals);
         controlKeys.forEach((key)=>{
@@ -65,14 +69,8 @@ export class RecordKeeper{
                 })
             });
             
-            let controlPairs = Object.entries(newData.controlSystemVals);
-            this.controlKeyList.forEach((key)=>{
-                controlPairs.forEach((val)=>{
-                    if(val[0] == key){
-                        line = line + "," + val[1].toString().replace(",", "/");
-                        return 
-                    }
-                })
+            newData.controlSystemVals.forEach((constant:CSConstant)=>{
+                line = line + "," + constant.value.toString().replace(",", "/");
             })
             this.recordedData.push(line);
         }
@@ -83,7 +81,7 @@ export class RecordKeeper{
         if(this.isRecording){
             let dataString:string = this.recordedData.join("\n");
             let d = new Date();
-            let fileName:string = `recordings/${d.getFullYear()}${d.getMonth()+1}${d.getDate()}${d.getHours()}${d.getMinutes()}${d.getSeconds()}DroneRecording.csv`   
+            let fileName:string = `recordings/${d.getFullYear()}-${d.getMonth()+1}-${d.getDate()}-${d.getHours()}-${d.getMinutes()}-${d.getSeconds()}DroneRecording.csv`   
             fs.writeFile(fileName, dataString, error=>{
                 if(error){
                     console.error(error)

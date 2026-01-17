@@ -1,6 +1,5 @@
 #include "ControlSystem.h"
-#include "Arduino.h"
-#include <vector>
+
 
 ControlSystem::ControlSystem(String name, std::vector<CSConstant> initialConstants)
     : name(name),
@@ -26,5 +25,17 @@ void ControlSystem::modifyControlConstant(String parameterName, double newValue)
 
 std::vector<CSConstant> ControlSystem::getControlConstants(){
     return constants;
+}
+
+double ControlSystem::cst(String name){
+    double value = -1;
+
+    for(int i=0; i<constants.size(); i++){
+        if(constants[i].name == name){
+            value = constants[i].value;
+        }
+    }
+    return value;
+
 }
 

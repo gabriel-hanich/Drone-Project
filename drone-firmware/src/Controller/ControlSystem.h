@@ -55,6 +55,14 @@ class ControlSystem{
         */
         std::vector<CSConstant> constants;
 
+
+        /*
+        Returns the value stored within CSConstants corresponding
+        to the provided name. Returns -1 if no value corresponds to
+        the given name
+        */
+        double cst(String name);
+
 };
 
 

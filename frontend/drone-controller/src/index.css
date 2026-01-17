@@ -1,3 +1,9 @@
+@font-face {
+  font-family: "inter";
+  src: url("./assets/inter.ttf");
+}
+
+
 body {
   margin: 0;
   font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;

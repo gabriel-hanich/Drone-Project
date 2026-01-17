@@ -10,6 +10,7 @@
             "includePath": [
                 "C:/Users/gabri/Documents/GitHub/Drone-Project/drone-firmware/include",
                 "C:/Users/gabri/Documents/GitHub/Drone-Project/drone-firmware/src",
+                "C:/Users/gabri/Documents/GitHub/Drone-Project/drone-firmware/lib/DShortRMT",
                 "C:/Users/gabri/.platformio/packages/framework-arduinoespressif32/libraries/WiFi/src",
                 "C:/Users/gabri/.platformio/packages/framework-arduinoespressif32/tools/sdk/esp32/include/newlib/platform_include",
                 "C:/Users/gabri/.platformio/packages/framework-arduinoespressif32/tools/sdk/esp32/include/freertos/include",
@@ -246,6 +247,7 @@
                 "path": [
                     "C:/Users/gabri/Documents/GitHub/Drone-Project/drone-firmware/include",
                     "C:/Users/gabri/Documents/GitHub/Drone-Project/drone-firmware/src",
+                    "C:/Users/gabri/Documents/GitHub/Drone-Project/drone-firmware/lib/DShortRMT",
                     "C:/Users/gabri/.platformio/packages/framework-arduinoespressif32/libraries/WiFi/src",
                     "C:/Users/gabri/.platformio/packages/framework-arduinoespressif32/tools/sdk/esp32/include/newlib/platform_include",
                     "C:/Users/gabri/.platformio/packages/framework-arduinoespressif32/tools/sdk/esp32/include/freertos/include",

@@ -31,7 +31,7 @@ export interface DroneData{
     activeFlags: String[];
 
     refreshRate: number;
-    packetAge: number;
+    packetTime: number;
 
     pitch: number;
     roll: number;
@@ -290,7 +290,7 @@ export function handleCommand(state:DroneConnection, command:DroneCommand): Dron
         }
         if(activeCmd.property == DroneProperty.Y_ACC_SETPOINT){
             state.droneInfo.yAcc = activeCmd.amount;
-            state.droneInfo.yawAccSetPoint = activeCmd.amount;
+            state.droneInfo.yAccSetPoint = activeCmd.amount;
         }
         if(activeCmd.property == DroneProperty.Z_ACC_SETPOINT){
             state.droneInfo.zAcc = activeCmd.amount;
@@ -320,7 +320,7 @@ var initialDroneData:DroneData = {
     activeFlags:[""],
 
     refreshRate:0,
-    packetAge:0,
+    packetTime:0,
 
     pitch:0,
     roll:0,

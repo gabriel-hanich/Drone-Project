@@ -18,7 +18,18 @@ const Routines:React.FC = () => {
 
 
     useEffect(()=>{
+        console.log("ONLOAD");
         matchLocalData();
+        if(!isPaused){
+            let frontEndUpdater = setInterval(()=>{
+                matchLocalData();
+                if(routinePortion >= 0.99){
+                    setTimeout(()=>{
+                        clearInterval(frontEndUpdater);
+                    }, 500)
+                }
+            }, 100)
+        }
     }, [])
 
     // Manages a file being uploaded to the routine
@@ -128,9 +139,6 @@ const Routines:React.FC = () => {
         let displayDelays:String[] = ["", "", "", ""];
         let displayColors:string[] = ["#fff", "#fff", "#fff", "#fff", "#fff"];
 
-        console.log(sentSteps.length);
-        console.log(futureSteps);
-
         if(futureSteps.length >= 2){
             displayCmds[0] = futureSteps[1].command
             displayDelays[0] = (futureSteps[1].delay - futureSteps[0].delay) + "ms"
@@ -162,8 +170,6 @@ const Routines:React.FC = () => {
 
 
         for(var i=0; i<displayCmds.length; i++){
-            console.log(displayCmds[i]);
-            console.log(legalRoutineCommand(displayCmds[i], droneState.droneInfo.activeFlags));
             if(!legalRoutineCommand(displayCmds[i], droneState.droneInfo.activeFlags)){
                 displayColors[i] = "#cf1d3b";
             }
@@ -214,6 +220,7 @@ const Routines:React.FC = () => {
             <div className="routine-viewer">
                 <div className="routine-item routine-playback">
                     <p><b>{routineName}</b></p>
+                    <p style={{display: (droneState.droneInfo.isArmed ? 'none' : 'block'), fontSize:'0.75rem'}}>Routines can only be started when the drone is Armed</p>
                     <div className="routine-btns">
                         <div className={"routine-btn " + ((!isPaused || routineName == 'None' || droneState.droneInfo.isEStopped || !droneState.droneInfo.isArmed) ? 'disabled-btn' : '')} id="start" onClick={() => setPlaystate(true)}>
                             <img id="start-img" src={triangle} alt="Start" />

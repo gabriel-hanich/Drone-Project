@@ -11,21 +11,21 @@
  It will be properly documented later
 */
 struct DroneState {
-    int opTime;
-    int epochTime;
+    int opTime; // The number of times since the drone was armed
+    int epochTime; // The current epoch time (number of ms since 01/01/1970)
 
-    bool isArmed;
-    bool isEStopped;
-    std::string lastInstruction;
+    bool isArmed; // If the drone is currently armed
+    bool isEStopped; // If the drone is currently emergency stopped
+    std::string lastInstruction; // The last command that the drone recieved
 
-    std::vector<String> controlSystemList;
-    String currentControlSystem;
-    std::vector<CSConstant> controlSystemVals;
+    std::vector<String> controlSystemList; // A list containing the names of all the stored control systems
+    String currentControlSystem; // The name of the current active control system
+    std::vector<CSConstant> controlSystemVals; // A list of all the constants being used by the active control system
 
-    std::vector<String> activeFlags;
+    std::vector<String> activeFlags; // A list of all the flags that are currently enabled
 
-    double refreshRate;
-    double packetAge;
+    double refreshRate; // The number of times per second that the control system is running
+    double packetTime; // The epoch time when the packet was created
 
     double pitch;
     double roll;
@@ -116,7 +116,7 @@ inline String droneStateToString(const DroneState& state) {
     res += ",\n\"activeFlags\": " + stringListToString(state.activeFlags);
 
     res += ",\n\"refreshRate\": " + String(state.refreshRate, 6);
-    res += ",\n\"packetAge\": " + String(state.packetAge, 6);
+    res += ",\n\"packetTime\": " + String(state.packetTime, 6);
 
     res += ",\n\"pitch\": " + String(state.pitch, 6);
     res += ",\n\"roll\": " + String(state.roll, 6);

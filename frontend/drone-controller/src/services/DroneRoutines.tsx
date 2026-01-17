@@ -65,10 +65,12 @@ export function playRoutine(flags:String[]): void{
             let currentTime = Date.now();
             let atEnd:boolean = true;
             if(routineStatus.isPaused){
+                routineStatus.lastTime = currentTime
                 return;
             }
 
             routineStatus.currentPosition = routineStatus.currentPosition + (currentTime - routineStatus.lastTime);
+            console.log(routineStatus.currentPosition);
             for(var i=0; i<routineStatus.activeRoutine.steps.length; i++){
                 let step:RoutineStep = routineStatus.activeRoutine.steps[i];
                 if(!step.sent){

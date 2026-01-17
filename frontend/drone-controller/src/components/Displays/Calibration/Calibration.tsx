@@ -11,15 +11,15 @@ const Calibration:React.FC = ()=>{
     const [elevation, setElevation] = useState<number>(0);
 
     function resetIMU(){
-        let pitchCMD:ActiveCommand = new ActiveCommand(Date.now(), DroneOperation.RESET, DroneProperty.PITCH, pitch);
-        let rollCMD:ActiveCommand = new ActiveCommand(Date.now(), DroneOperation.RESET, DroneProperty.ROLL, roll);
-        let yawCMD:ActiveCommand = new ActiveCommand(Date.now(), DroneOperation.RESET, DroneProperty.YAW, yaw);
+        let pitchCMD:ActiveCommand = new ActiveCommand(Date.now(), DroneOperation.RESET, DroneProperty.PITCH_SETPOINT, pitch);
+        let rollCMD:ActiveCommand = new ActiveCommand(Date.now(), DroneOperation.RESET, DroneProperty.ROLL_SETPOINT, roll);
+        let yawCMD:ActiveCommand = new ActiveCommand(Date.now(), DroneOperation.RESET, DroneProperty.YAW_SETPOINT, yaw);
         sendCommandObject(pitchCMD);
         sendCommandObject(rollCMD);
         sendCommandObject(yawCMD);
     }
     function resetElev(){
-        let thisCmd:ActiveCommand = new ActiveCommand(Date.now(), DroneOperation.RESET, DroneProperty.ELEVATION, elevation);
+        let thisCmd:ActiveCommand = new ActiveCommand(Date.now(), DroneOperation.RESET, DroneProperty.ELEVATION_SETPOINT, elevation);
         sendCommandObject(thisCmd);
     }
 
