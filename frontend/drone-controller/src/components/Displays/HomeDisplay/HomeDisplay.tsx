@@ -160,7 +160,7 @@ const HomeDisplay:React.FC = ()=>{
                     </tr>
                     <tr>
                         <td>{droneInfo.refreshRate}</td>
-                        <td>{((Date.now() - droneInfo.packetTime) / 1000).toFixed(lngth)}</td>
+                        <td>{((Date.now() / 1000) - droneInfo.packetTime).toFixed(3)}</td>
                     </tr>
                 </table>
             </div>

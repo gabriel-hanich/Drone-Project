@@ -1,6 +1,6 @@
 import { useState } from "react";
 import "./ConnectionManager.css"
-import { getBackendURL, getDroneURL, setBackendURL, useConnection } from "../../services/DroneConnection";
+import { getBackendURL, getDroneURL, setBackendURL, setDroneURL, useConnection } from "../../services/DroneConnection";
 
 const ConnectionManager:React.FC = ()=>{
     let backendConnected : boolean = useConnection().backendConnected;
@@ -11,7 +11,7 @@ const ConnectionManager:React.FC = ()=>{
 
     function updateURLs(){
         setBackendURL(userEnteredGroundStationURL);
-        setUserDroneURL(userDroneURL);
+        setDroneURL(userDroneURL);
     }
 
 

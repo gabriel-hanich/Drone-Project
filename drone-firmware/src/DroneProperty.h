@@ -31,7 +31,8 @@ enum DroneProperty{
 };
 
 
-static const char* const propertyStrings[16] = {
+static const char* const propertyStrings[17] = {
+    "DRONE_URL",
     "PITCH_SETPOINT",
     "ROLL_SETPOINT",
     "YAW_SETPOINT",
@@ -56,7 +57,7 @@ inline String dronePropertyToString(DroneProperty op){
 };
 
 inline DroneProperty stringToDroneProperty(String st){
-    for(int i=0; i<16; i++){
+    for(int i=0; i<17; i++){
         if(st == propertyStrings[i]){
             return static_cast<DroneProperty>(i);
         }

@@ -31,7 +31,6 @@ Command* Command::commandFromString(String line){
 
 
     if(!Command::isNumber(lineElems[0])){
-        Serial.println("RECURSING");
         int now = time(NULL);
         return commandFromString(String(now, 0) + " " + line);
     }

@@ -94,7 +94,7 @@ export async function sendCommandString(command: String): Promise<void> {
         const res = await fetch(`${backendURL}/commands`, (requestOptions as any));
 
     } catch (err) {
-        console.error("Fetch error:", err);
+        console.error("Fetch error when sending command:", err);
     }
 }
 
@@ -104,10 +104,26 @@ export function sendCommandObject(command:DroneCommand): void{
 
 export function setBackendURL(newURL:String){
     backendURL = newURL;
+    
 }
 
-export function setDroneURL(newURL:String){
+export async function setDroneURL(newURL:String){
     droneURL = newURL;
+
+    // Make a request to the web server to change it's drone URL
+    const requestOptions = {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ droneURL: newURL, droneConnectionType: 'http' }),
+        cache: "no-store"
+    };
+
+    try{
+        const res = await fetch(`${backendURL}/serverconfig`, (requestOptions as any));
+    }catch (err){
+        console.log("Fetch error when setting server config: " + err)
+    }
+
 }
 
 export function getBackendURL():String{

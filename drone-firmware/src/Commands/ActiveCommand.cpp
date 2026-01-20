@@ -15,7 +15,6 @@ String ActiveCommand::toPrettyString(){
 };
 
 DroneState ActiveCommand::enactCommand(DroneState currentState){
-  Serial.println("ENACTING COMMAND");
   if(operation == SET){
     switch(property){
       case PITCH_SETPOINT:

@@ -1,6 +1,4 @@
 /**
- * Gabriel Hanich - 15/11/2025 
- * 
  * A basic test server with randomly generated data produced every 
  * `updateInteval` seconds,  and the ability to recieve drone commands
  * as text. Used when developing the associated web app. 

@@ -1,11 +1,11 @@
 export interface DroneConnection{
     backendURL: String;
     droneURL: String;
+    droneConnectionType: String;
     backendConnected:boolean; // Whether or not the website can connect to the ground station
     droneConnected:boolean; // Whether or not the ground station can connect to the drone
     pollingRate:Number;
     
-    droneFirmwareVersion: String;
     backendFirmwareVersion: String;
     frontendFirmwareVersion: String;
 
@@ -17,6 +17,8 @@ export interface DroneConnection{
 }
 
 export interface DroneData{
+    droneFirmwareVersion: String;
+    
     opTime: number;
     epochTime: number;
 
@@ -82,6 +84,7 @@ export enum DroneOperation{
 }
 
 export enum DroneProperty{
+    DRONE_URL = "DRONE_URL",
     PITCH_SETPOINT = "PITCH_SETPOINT",
     ROLL_SETPOINT = "ROLL_SETPOINT",
     YAW_SETPOINT = "YAW_SETPOINT",
@@ -305,7 +308,9 @@ export function handleCommand(state:DroneConnection, command:DroneCommand): Dron
 }
 
 
-var initialDroneData:DroneData = {
+export var initialDroneData:DroneData = {
+    droneFirmwareVersion: "",
+
     opTime:0,
     epochTime:0,
 
@@ -313,7 +318,7 @@ var initialDroneData:DroneData = {
     isEStopped:true,
     lastInstruction:"0 EMERGENCY_STOP",
 
-    controlSystemList:["option 1", "option 2", "option 3"],
+    controlSystemList:["KILL", "ME"],
     currentControlSystem:"option 1",
     controlSystemVals:[{"name": "a", "value": 1}, {"name": "b", "value": 2}, {"name": "c", "value": 3}],
 
@@ -358,13 +363,13 @@ var initialDroneData:DroneData = {
 export var initialConnection:DroneConnection = {
         backendURL: "",
         droneURL: "",
+        droneConnectionType: "https",
         backendConnected: true,
-        droneConnected: true,
+        droneConnected: false,
         pollingRate: -1,
         pastCommands: [],
         isRecording: false,
         
-        droneFirmwareVersion: "",
         backendFirmwareVersion: "",
         frontendFirmwareVersion: "0.1.0",
         droneInfo:initialDroneData,

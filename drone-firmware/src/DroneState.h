@@ -11,6 +11,8 @@
  It will be properly documented later
 */
 struct DroneState {
+    String droneFirmwareVersion; // The version of this firmware
+    
     int opTime; // The number of times since the drone was armed
     int epochTime; // The current epoch time (number of ms since 01/01/1970)
 
@@ -102,8 +104,8 @@ of the drone.
 */
 inline String droneStateToString(const DroneState& state) {
     String res = "{";
-
-    res += "\n\"opTime\": " + String(state.opTime);
+    res += "\n\"droneFirmwareVersion\": \"" + String(state.droneFirmwareVersion) + "\"";
+    res += ",\n\"opTime\": " + String(state.opTime);
     res += ",\n\"epochTime\": " + String(state.epochTime);
     res += ",\n\"isArmed\": " + String(state.isArmed);
     res += ",\n\"isEStopped\": " + String(state.isEStopped);
@@ -144,6 +146,9 @@ inline String droneStateToString(const DroneState& state) {
 
     res += ",\n\"elevation\": " + String(state.elevation, 6);
     res += ",\n\"elevationSetPoint\": " + String(state.elevationSetPoint, 6);
+
+    res += ",\n\"dMotor1Throttle\": " + String(state.dMotor1Throttle, 6);
+    res += ",\n\"dMotor2Throttle\": " + String(state.dMotor2Throttle, 6);
 
     res += ",\n\"fin1Deflection\": " + String(state.fin1Deflection, 6);
     res += ",\n\"fin2Deflection\": " + String(state.fin2Deflection, 6);

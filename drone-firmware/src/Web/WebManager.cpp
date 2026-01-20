@@ -86,8 +86,6 @@ void WebManager::tick(){
 
 
     if(client){
-        Serial.println("Client Connected!");
-
         upTime = millis();
         previousTime = upTime;
 
@@ -119,7 +117,6 @@ void WebManager::tick(){
 
         delay(5);
         client.stop();
-        Serial.println("Client disconnected");
     }
 };
 
@@ -134,7 +131,6 @@ Command* WebManager::getLastCommand(){
 
 
 void WebManager::sendDroneState(WiFiClient client){
-    Serial.println("Handling GET Request");
     String jsonData = droneStateToString(currentDroneState);
 
     client.println("HTTP/1.1 200 OK");
@@ -144,11 +140,9 @@ void WebManager::sendDroneState(WiFiClient client){
     client.println(jsonData.length());
     client.println();
     client.print(jsonData);
-    Serial.println("Sent JSON data to client");
 }
 
 void WebManager::handlePostRequest(WiFiClient client, String headers){
-    Serial.println("HANDLING POST REQUEST");
     size_t startIndex = headers.indexOf("command=") + 8;
     String command = "";
     for(int i=startIndex; i<headers.length(); i++){

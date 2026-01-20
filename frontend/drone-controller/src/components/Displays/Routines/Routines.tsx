@@ -237,7 +237,7 @@ const Routines:React.FC = () => {
                         <div className="routine-scrubber" style={{left: (routinePortion * 100) + "%"}}></div>
                     </div>
                 </div>
-                <div className="routine-item preview">
+                <div className="routine-item preview" style={{display: (routineName == "None" ? 'none' : 'grid')}}>
                     <div className="arrow-container">
                         <img src={triangle} alt="" className="arrow-tip" />
                     </div>

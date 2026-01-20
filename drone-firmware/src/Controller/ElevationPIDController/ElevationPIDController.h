@@ -18,11 +18,7 @@ class ElevationPIDController: public ControlSystem{
         DroneState updateState(DroneState state);
 
     private:
-        // Error on the last step
-        double e1 = 0;
-
-        // Error 2 steps ago
-        double e2 = 0;
+        std::vector<double> pastErrors = {};
 
 };
 
