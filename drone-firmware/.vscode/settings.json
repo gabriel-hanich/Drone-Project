@@ -1,3 +1,4 @@
 {
-    "C_Cpp.errorSquiggles": "enabled"
+    "C_Cpp.errorSquiggles": "enabled",
+    "cmake.sourceDirectory": "C:/Users/gabri/Documents/GitHub/Drone-Project/drone-firmware/lib/Adafruit_BusIO"
 }

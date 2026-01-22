@@ -1,5 +1,7 @@
 #include <Arduino.h>
 #include <DShotRMT.h>
+#include <time.h>
+#include "esp_log.h"
 
 
 #include "ProgramConstants.h"
@@ -7,8 +9,7 @@
 #include "DroneOperation.h"
 #include "Commands/PassiveCommand.h"
 #include "PhysicalComponents/PWMComponent.h"
-#include <time.h>
-#include "esp_log.h"
+#include "PhysicalComponents/IMUComponent.h"
 
 
 String version = "0.0.1";
@@ -18,9 +19,7 @@ time_t currentTime;
 
 DroneState currentState;
 
-
-PWMComponent greenChannel = PWMComponent(25, "Green Channel of RGB LED");
-PWMComponent blueChannel = PWMComponent(32, "Blue Channel of RGB LED");
+// IMUComponent imu(4,18,15,19,0,2);
 
 
 void setup() {
@@ -29,6 +28,8 @@ void setup() {
   esp_log_level_set("wifi", ESP_LOG_NONE);
   server.initialise();
   server.syncTime();
+
+  // imu.initialise();
 
   Serial.println("Done!");
 
@@ -39,21 +40,21 @@ void loop() {
   time(&currentTime);
   currentState.epochTime = currentTime;
   currentState.packetTime = currentTime;
+  // imu.takeReading();
+
+
+  // currentState.pitch = imu.getPitch();
+  // currentState.roll = imu.getRoll();
+  // currentState.yaw = imu.getYaw();
+
+  // currentState.xAcc = imu.getXAcc();
+  // currentState.yAcc = imu.getYAcc();
+  // currentState.zAcc = imu.getZAcc();
+
   server.updateDroneState(currentState);
   server.tick();
 
-  if(currentState.isEStopped){
-    blueChannel.setValue(255);
-    greenChannel.setValue(0);
-  }else{
-    if(currentState.isArmed){
-      blueChannel.setValue(0);
-      greenChannel.setValue(255);
-    }else{
-      blueChannel.setValue(255);
-      greenChannel.setValue(255);
-    }
-  }
+  
 
   if(server.newCommand){
     Command* newCommand = server.getLastCommand();
@@ -61,8 +62,6 @@ void loop() {
     currentState = newCommand->enactCommand(currentState);
   }
 
-  
-  delay(10);
 
 }
 
