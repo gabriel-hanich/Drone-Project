@@ -11,7 +11,7 @@ String SelectCommand::toPrettyString(){
 
 
 DroneState SelectCommand::enactCommand(DroneState currentState){
-    if(operation == CONTROL_SELECT){
+    if(operation == CONTROL_SELECT && !currentState.isArmed && !currentState.isEStopped){
         if(!currentState.isEStopped && !currentState.isArmed){
             // Check that the selected command is actually one of the available ones
             if(std::count(currentState.controlSystemList.begin(), currentState.controlSystemList.end(), selectedValue) > 0){

@@ -28,7 +28,7 @@ Command* Command::commandFromString(String line){
             lineElems[index] += line.charAt(i);
         }
     }
-
+   
 
     if(!Command::isNumber(lineElems[0])){
         int now = time(NULL);

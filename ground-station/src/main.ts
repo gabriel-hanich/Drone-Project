@@ -67,9 +67,6 @@ app.post("/serverconfig", (req, res)=>{
     if(req.body.droneConnectionType != ""){
         connectionData.droneConnectionType = req.body.droneConnectionType;
     }
-
-    // Test the new droneUrl
-
 });
 
 

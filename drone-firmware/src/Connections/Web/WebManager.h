@@ -2,13 +2,12 @@
 #define WEBMANAGER_H
 
 #include <Wifi.h>
-#include "../DroneState.h"
-#include "../Commands/Command.h"
-#include "../Commands/PassiveCommand.h"
-#include "../DroneOperation.h"
 
 
-class WebManager{
+#include "../ConnectionManager.h"
+
+
+class WebManager: public ConnectionManager{
     /*
     This class manaages the web server's operation, including initialising
     the web server and handling sending and getting new data
@@ -22,14 +21,8 @@ class WebManager{
         Initialises the web server. After this command is run, the drone
         is able to be connected to, and transmit data
         */
-        void initialise();
+        bool initialise();
 
-
-        /*
-        Uses HTTP to deterimne the time, enabling the board's time to 
-        accurately match UTC
-        */
-       void syncTime();
 
         /*
         Recieves a client who made a request to the drone and provides the
@@ -38,23 +31,15 @@ class WebManager{
         */
         void tick();
 
-        /*
-        Changes the drone state data that will be sent out to any device
-        which request it over http. newState is the most recent version of
-        the drones state
-        */
-        void updateDroneState(DroneState newState);
+
 
         /*
-        Returns the most recent command recieved by the drone
+        Uses HTTP to deterimne the time, enabling the board's time to 
+        accurately match UTC
         */
-        Command* getLastCommand();
+        void syncTime();
 
-        /*
-        Checks if there is a new command that has not yet been read by `getLastCommand()`
-        */
-        bool newCommand = false;
-
+        
 
 
     private:
@@ -64,11 +49,7 @@ class WebManager{
 
         WiFiServer webServer;
 
-        DroneState currentDroneState; // The most recent drone state, to be communicated to 
-                                      // whichever device makes a GET request
-
-        Command* lastRecievedCommand = new PassiveCommand(0, EMERGENCY_STOP); // The last command which was recieved by the server
-
+       
         // This is a function that sends a connected client the value stored in 'currentDroneState' 
         void sendDroneState(WiFiClient client);
 

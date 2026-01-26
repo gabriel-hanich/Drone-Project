@@ -5,7 +5,8 @@
 
 
 WebManager::WebManager(const char* ssid, const char* password, int port)
-    : ssid(ssid),
+    : ConnectionManager(),
+      ssid(ssid),
       password(password),
       port(port),
       webServer(port){};
@@ -14,7 +15,7 @@ WebManager::WebManager(const char* ssid, const char* password, int port)
 
 // Web code based on code from
 // https://randomnerdtutorials.com/esp32-web-server-arduino-ide/
-void WebManager::initialise(){
+boolean WebManager::initialise(){
     WiFi.mode(WIFI_STA);
     WiFi.disconnect(true, true);  // clear old state
     delay(100);
@@ -36,8 +37,10 @@ void WebManager::initialise(){
         Serial.println(port);
         Serial.print("IP Address: ");
         Serial.println(WiFi.localIP());
+        Serial.print("Available at: http://");
+        Serial.println(WiFi.localIP().toString() + "/");
         webServer.begin();
-        return;
+        return true;
     };
 
 
@@ -56,6 +59,8 @@ void WebManager::initialise(){
             Serial.println(WiFi.SSID(i).c_str());
         }
     }
+    
+    return false;
 
 };
 
@@ -104,7 +109,7 @@ void WebManager::tick(){
             }
         }
 
-
+        this->lastContactTime = millis();
         if(request.startsWith("GET")){
             sendDroneState(client);
         }
@@ -120,14 +125,6 @@ void WebManager::tick(){
     }
 };
 
-void WebManager::updateDroneState(DroneState newState){
-    currentDroneState = newState;
-}
-
-Command* WebManager::getLastCommand(){
-    newCommand = false;
-    return lastRecievedCommand;
-}
 
 
 void WebManager::sendDroneState(WiFiClient client){
@@ -154,7 +151,7 @@ void WebManager::handlePostRequest(WiFiClient client, String headers){
     command.replace("%20", " ");
     Command* incomingCommand = Command::commandFromString(command);
     this->lastRecievedCommand = incomingCommand;
-    newCommand = true; 
+    this->isNewCommand = true; 
 
     client.println("HTTP/1.1 200 OK");
     client.println("");

@@ -7,7 +7,7 @@ of the drone which can be changed by a command to the drone
 */
 
 enum DroneProperty{
-    PITCH_SETPOINT,
+    PITCH_SETPOINT = 0,
     ROLL_SETPOINT,
     YAW_SETPOINT,
     PITCH_ACC_SETPOINT,
@@ -31,8 +31,7 @@ enum DroneProperty{
 };
 
 
-static const char* const propertyStrings[17] = {
-    "DRONE_URL",
+static const char* const propertyStrings[16] = {
     "PITCH_SETPOINT",
     "ROLL_SETPOINT",
     "YAW_SETPOINT",
@@ -57,7 +56,7 @@ inline String dronePropertyToString(DroneProperty op){
 };
 
 inline DroneProperty stringToDroneProperty(String st){
-    for(int i=0; i<17; i++){
+    for(int i=0; i<16; i++){
         if(st == propertyStrings[i]){
             return static_cast<DroneProperty>(i);
         }

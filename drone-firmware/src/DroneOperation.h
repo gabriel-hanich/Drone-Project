@@ -4,7 +4,7 @@
 #include <Arduino.h>
 
 enum DroneOperation{
-    ARM,
+    ARM = 0,
     DISARM,
     EMERGENCY_STOP,
     EMERGENCY_RESTART,
@@ -34,13 +34,14 @@ static const char* const opStrings[12] = {
     "FLAG_SET"
 };
 
+
 // Function which converts an enum value to the string
 inline String droneOpToString(DroneOperation op){
     return opStrings[op];
 };
 
 inline DroneOperation stringToDroneOp(String st){
-    for(int i=0; i<11; i++){
+    for(int i=0; i<12; i++){
         if(st == opStrings[i]){
             return static_cast<DroneOperation>(i);
         }

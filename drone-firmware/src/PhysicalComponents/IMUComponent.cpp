@@ -19,12 +19,12 @@ void IMUComponent::initialise(){
     
     if(!imu.begin_SPI(CSPin, INTPin)){
         Serial.println("FAILED TO FIND IMU PIN AT");
-        Serial.println("CSPIN =" + CSPin);
-        Serial.println("SCKPin =" + SCKPin);
-        Serial.println("INTPin =" + INTPin);
-        Serial.println("MISOPin =" + MISOPin);
-        Serial.println("MOSIPin =" + MOSIPin);
-        Serial.println("RSTPin =" + RSTPin);
+        Serial.println("CSPIN=" + String(CSPin));
+        Serial.println("SCKPin=" + String(SCKPin));
+        Serial.println("INTPin=" + String(INTPin));
+        Serial.println("MISOPin=" + String(MISOPin));
+        Serial.println("MOSIPin=" + String(MOSIPin));
+        Serial.println("RSTPin=" + String(RSTPin));
     };
     
     Serial.println("Succesfully Found IMU!");

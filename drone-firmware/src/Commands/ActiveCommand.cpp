@@ -48,7 +48,6 @@ DroneState ActiveCommand::enactCommand(DroneState currentState){
         currentState.elevationSetPoint = value;
         break;
     };
-
     // If the HARDWARE_TESTING flag is active
     if(std::count(currentState.activeFlags.begin(), currentState.activeFlags.end(), "HARDWARE_TESTING") > 0){
       switch(property){
@@ -57,11 +56,11 @@ DroneState ActiveCommand::enactCommand(DroneState currentState){
             currentState.dMotor1Throttle = value;
           }
           break;
-        case D_MOTOR2_THROTTLE:
-          if(value <= 0.1){
-            currentState.dMotor2Throttle = value;
-          } 
-          break;
+          case D_MOTOR2_THROTTLE:
+            if(value <= 0.1){
+              currentState.dMotor2Throttle = value;
+            } 
+            break;
         case FIN1_DEFLECTION:
           currentState.fin1Deflection = value;
           break;
@@ -76,10 +75,7 @@ DroneState ActiveCommand::enactCommand(DroneState currentState){
           break;
       }
     };
-  }else if(operation == RESET){
-    // TODO: Implement
-  };
-
+  }
   return currentState;
 };
 

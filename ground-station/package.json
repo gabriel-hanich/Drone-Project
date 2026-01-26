@@ -7,8 +7,8 @@
   "type": "commonjs",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon ./src/main.ts"
+    "start": "nodemon ./src/main.ts",
+    "test": "nodemon ./src/testServer.ts"
   },
   "devDependencies": {
     "@types/express": "^5.0.5",

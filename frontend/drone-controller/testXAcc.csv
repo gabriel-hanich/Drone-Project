@@ -1,8 +1,14 @@
-0,SET X_ACC_SETPOINT 0
-1000,SET X_ACC_SETPOINT 10
-5000,SET X_ACC_SETPOINT 15
-6500,SET X_ACC_SETPOINT 50
-7000,SET X_ACC_SETPOINT 30
-8000,SET X_ACC_SETPOINT 100
-9000,SET X_ACC_SETPOINT 20
-11000,SET X_ACC_SETPOINT 0
+Object.keys(controllerParameters).forEach((key:String)=>{
+            if(key.includes(searchedVal.toString())){
+                return (
+                <div className={"value-item " + (getConstantValue(newControllerParams, pair.name) == pair.value ? '' : 'value-changed')} key={pair.name as Key}>
+                    <p className="value-name">{pair.name}</p>
+                    <button className="value-button cursor" onClick={() => changeVal(pair.name, getConstantValue(newControllerParams, pair.name) - 0.1)}>-0.1</button>
+                    <button className="value-button cursor" onClick={() => changeVal(pair.name, getConstantValue(newControllerParams, pair.name) - 0.01)}>-0.01</button>
+                    <input type="number" className="value-input" value={getConstantValue(newControllerParams, pair.name)} onChange={(e) => changeVal(pair.name, parseFloat(e.target.value))} pattern="-?[0-9]+"/>
+                    <button className="value-button cursor" onClick={() => changeVal(pair.name, getConstantValue(newControllerParams, pair.name) + 0.01)}>+0.01</button>
+                    <button className="value-button cursor" onClick={() => changeVal(pair.name, getConstantValue(newControllerParams, pair.name) + 0.1)}>+0.1</button>
+                </div>
+                )
+            }
+        });

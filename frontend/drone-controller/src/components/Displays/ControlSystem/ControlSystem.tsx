@@ -23,6 +23,13 @@ const ControlSystem:React.FC = ()=>{
             var e = document.getElementById("control-chooser");
             let selectCommand:SelectValueCommand = new SelectValueCommand(Date.now(), DroneOperation.CONTROL_SELECT, (e as any).value);
             sendCommandObject(selectCommand);
+            setLoadFields(false);
+            let paramsInterval = setInterval(()=>{
+                if(controllerParameters != newControllerParams){
+                    setNewControllerParams(controllerParameters);
+                    clearInterval(paramsInterval);
+                }
+            }, 500)
         }
     }
 
@@ -64,6 +71,11 @@ const ControlSystem:React.FC = ()=>{
 
     // Generates the form which enables the user to modify the controller parameters
     function generateFields(){
+        if(!controllerParameters.length || controllerParameters.length == 0){
+            return (
+                <p>There where no controller parameters detected</p>
+            )
+        }
         return controllerParameters.map((pair:CSConstant)=>{
             if(pair.name.includes(searchedVal.toString())){
                 return (
@@ -107,11 +119,11 @@ const ControlSystem:React.FC = ()=>{
     function updateParamsFromCSV(event:ProgressEvent<FileReader>) {
         let fileContents: String = (event.target as FileReader).result as String;
         let fileLines:String[] =  fileContents.split("\n");
-        let newParameters: any = {}
+        let newParameters: CSConstant[] = []
         fileLines.forEach((line)=>{
             let paramPair = line.split(",");
             if(paramPair.length == 2){
-                newParameters[paramPair[0]] = parseFloat(paramPair[1].replaceAll("\r", ""));
+                newParameters.push({"name": paramPair[0], "value": parseFloat(paramPair[1].replaceAll("\r", ""))});
             }
         })
         setNewControllerParams(newParameters);
@@ -139,6 +151,12 @@ const ControlSystem:React.FC = ()=>{
 
         // Clean up
         URL.revokeObjectURL(url);
+    }
+
+    // Removes all of the user-changed values, resets them 
+    // to the values as stored by the drone
+    function restoreVals(){
+        setNewControllerParams(controllerParameters);
     }
 
 
@@ -181,6 +199,7 @@ const ControlSystem:React.FC = ()=>{
                 <div className="value-contianer expand">
                     <div className="value-bar">
                         <input type="text" className="value-search" placeholder="Search Values" onChange={(val)=> setSearchVal(val.target.value)}/>
+                        <button className="value-update update-btn" onClick={restoreVals}>Undo Changes</button>
                         <button className="value-update update-btn" onClick={updateFields}>Update Modified Values</button>
                     </div>
                     <div className="value-items">

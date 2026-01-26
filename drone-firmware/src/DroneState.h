@@ -69,7 +69,7 @@ the list in JSON format
 inline String stringListToString(const std::vector<String>& lst) {
     String res = "[";
     for(int i=0; i<lst.size(); i++){
-        res += "'" + lst[i] + "'";
+        res += '"' + lst[i] + '"';
         
         if(i != lst.size() - 1){
             res += ",";
@@ -86,14 +86,20 @@ where the name of the CSConstant is the key, pointing to the corresponding
 value. The returned string is in JSON format
 */
 inline String constantListToString(const std::vector<CSConstant>& lst) {
-    String res = "{";
+    String res = "[";
     for(int i=0; i<lst.size(); i++){
-        res += String(lst[i].name.c_str()) + ": " + String(lst[i].value, 6);
+        res += "{";
+        res += "\"name\": \"";
+        res += lst[i].name.c_str();
+        res += "\",\n";
+        res += "\"value\": ";
+        res += String(lst[i].value, 6);
+        res += "}";
         if(i != lst.size() - 1){
-            res += ", ";
+            res += ",\n";
         }
     };
-    res += "}"; 
+    res += "]"; 
     return res; 
 }
 
@@ -157,6 +163,10 @@ inline String droneStateToString(const DroneState& state) {
 
     res += "\n}";
     return res;
+}
+
+inline boolean contains(std::vector<String> sList, String search){
+    return (std::count(sList.begin(), sList.end(), search) > 0);
 }
 
 #endif
