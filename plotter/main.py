@@ -7,14 +7,13 @@ import matplotlib.pyplot as plt
 
 menu = MenuDepth.WELCOME
 version = "0.0.2"
-backendURL = "http://localhost:8080/"
 print(util.bigLogo)
 print(f"Version {version}")
 while True:
     if menu == MenuDepth.WELCOME:
         selectedMenu = util.selectFromList(["Change connection settings", "Create a new graph", "Open a saved graph", "EXIT"])
         if selectedMenu == "Change connection settings":
-            menu = MenuDepth.SETUP
+            menu = MenuDepth.CONNECTION_SETTINGS
         if selectedMenu == "Create a new graph":
             menu = MenuDepth.PLOT_SELECTOR
         if selectedMenu == "Open a saved graph":
@@ -22,15 +21,50 @@ while True:
         if selectedMenu == "EXIT":
             exit()
 
+    if menu == MenuDepth.CONNECTION_SETTINGS:
+        print(f"{bcolors.OKBLUE}\nCurrent Connection settings{bcolors.ENDC}")
+        with open("./connectionSettings.json", "r") as settingsFile:
+            settings = json.load(settingsFile)
+        
+        lineLength = 20
+        print(f"{'URL':<{lineLength}} | " + settings["url"])
+        print(f"{'ms between requests':<{lineLength}} | " + str(settings["delay"]) + "\n")
+
+        changeSettings = util.selectFromList(["URL", "ms between requests", "BACK"])
+
+        if changeSettings == "URL":
+            newUrl = input("What should the new URL be\n")
+            settings["url"] = newUrl
+        elif changeSettings == "ms between requests":
+            newDelay = util.inputInteger("How many milliseconds between subsequent requests\n", minVal=0)
+            settings["delay"] = newDelay
+        elif changeSettings == "BACK":
+            menu = MenuDepth.WELCOME
+            continue
+
+        with open("./connectionSettings.json", "w") as settingsFile:
+            json.dump(settings, settingsFile)
+
     if menu == MenuDepth.PLOT_SELECTOR:
+        try:
+            with open("./connectionSettings.json", "r") as settingsFile:
+                settings = json.load(settingsFile)
+            url = settings["url"]
+            delay = settings["delay"]
+        except Exception as e:
+            print(f"{bcolors.FAIL}FAILED TO READ SETTINGS FILE{bcolors.ENDC}")
+            print(e)
+            break
+
         graphType = util.selectFromList(["Line graph", "Scatter plot", "BACK"], "Select a type of graph")
 
         if graphType == "BACK":
             menu = MenuDepth.WELCOME
             continue;
         
+      
         # Allows the user to input expressions for the x-axis, and all the series 
-        state = DroneState(backendURL)
+        state = DroneState(url)
         xAxisExp = util.inputValidExpression(state, "Write an expression for the X-Axis\n - Write HELP for help and BACK to go back\n", util.printAxisHelpText)
         if(xAxisExp == "BACK"):
             menu = MenuDepth.WELCOME
@@ -72,10 +106,10 @@ while True:
         maxDP = -1
         if(graphType == "Line graph"):
             maxDP = util.inputInteger("\nMaximum number of data points to be plotted\n Enter -1 for data removal to be disabled\n", minVal=-1)
-            util.plotLineGraph(state, xAxisExp, seriesExps, xAxisLabel, yAxisLabel, seriesLabels, seriesColors, maxDP)
+            util.plotLineGraph(state, xAxisExp, seriesExps, xAxisLabel, yAxisLabel, seriesLabels, seriesColors, maxDP, (delay/1000))
         
         if(graphType == "Scatter plot"):
-            util.plotScatterPlot(state, xAxisExp, seriesExps, xAxisLabel, yAxisLabel, seriesLabels, seriesColors)
+            util.plotScatterPlot(state, xAxisExp, seriesExps, xAxisLabel, yAxisLabel, seriesLabels, seriesColors, (delay/1000))
         
         # After the graph has been displayed, give the user the option to save the data for easy use next time
         nextAction = util.selectFromList([
@@ -133,13 +167,23 @@ while True:
             menu = MenuDepth.WELCOME
             continue
 
+        try:
+            with open("./connectionSettings.json", "r") as settingsFile:
+                settings = json.load(settingsFile)
+            url = settings["url"]
+            delay = settings["delay"]
+        except Exception as e:
+            print(f"{bcolors.FAIL}FAILED TO READ SETTINGS FILE{bcolors.ENDC}")
+            print(e)
+            break
+
         chosenGraph = {}
         for elmt in graphData["graphs"]:
             if elmt["name"] == graphName:
                 chosenGraph = elmt
                 break
         
-        state = DroneState(backendURL)
+        state = DroneState(url)
 
         if(chosenGraph['type'] == 'Line graph'):
             util.plotLineGraph(
@@ -151,6 +195,7 @@ while True:
                 chosenGraph["seriesLabels"],
                 chosenGraph["seriesColors"],
                 chosenGraph["maxDP"],
+                (delay / 1000)
                 )
         elif(chosenGraph['type'] == 'Scatter plot'):
             util.plotScatterPlot(
@@ -160,6 +205,7 @@ while True:
                 chosenGraph["xAxisLabel"],
                 chosenGraph["yAxisLabel"],
                 chosenGraph["seriesLabels"],
-                chosenGraph["seriesColors"]
+                chosenGraph["seriesColors"],
+                (delay / 1000)
             )
         

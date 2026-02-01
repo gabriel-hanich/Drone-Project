@@ -199,7 +199,7 @@ def nestedMax(lst):
 
 
 
-def plotLineGraph(state, xAxisExp, seriesExps, xAxisLabel, yAxisLabel, seriesLabels, seriesColors, maxDP):
+def plotLineGraph(state, xAxisExp, seriesExps, xAxisLabel, yAxisLabel, seriesLabels, seriesColors, maxDP, delay):
     """
     Plots a line graph that updates in real time
     - state is the current DroneState object
@@ -246,9 +246,9 @@ def plotLineGraph(state, xAxisExp, seriesExps, xAxisLabel, yAxisLabel, seriesLab
         plt.ylabel(yAxisLabel)
 
         state.getNewData()
-        plt.pause(0.25)
+        plt.pause(delay)
 
-def plotScatterPlot(state, xAxisExp, seriesExps, xAxisLabel, yAxisLabel, seriesLabels, seriesColors):
+def plotScatterPlot(state, xAxisExp, seriesExps, xAxisLabel, yAxisLabel, seriesLabels, seriesColors, delay):
     seriesCount = len(seriesExps)
     x = [0]
     y = list([0] for _ in range(seriesCount))
@@ -291,4 +291,4 @@ def plotScatterPlot(state, xAxisExp, seriesExps, xAxisLabel, yAxisLabel, seriesL
         plt.ylabel(yAxisLabel)
 
         state.getNewData()
-        plt.pause(0.25)
+        plt.pause(delay)

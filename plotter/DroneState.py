@@ -58,7 +58,6 @@ class DroneState:
         with urllib.request.urlopen(self.dataURL) as backendPage:
             rawData = json.loads(backendPage.read().decode())
 
-        
         for key, value in rawData["droneInfo"].items():
             setattr(self, key, value)
         self.time = time.time();
