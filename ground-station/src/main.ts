@@ -6,6 +6,7 @@ import { DroneCommand, DroneConnection, DroneOperation, initialConnection } from
 import { RecordKeeper } from "./RecordKeeper";
 import { getDroneData, sendDroneCommand } from "./DroneConnection";
 const cors = require('cors');
+const express = require('express');
 
 
 const port: number = 8080; // The port that the webserver is hosted at  
@@ -13,8 +14,7 @@ const versionNumber: String = "0.0.1"; // The current version of this code
 const newThreshold: number = 500 // The maximum age of a packet before the server will make another request to the drone (in ms)
 
 
-// Initalise the web server
-const express = require('express');
+/// Initalise the web server
 const app = express();
 
 const recordManager = new RecordKeeper();
@@ -28,7 +28,7 @@ var connectionData:DroneConnection = initialConnection
 connectionData.backendFirmwareVersion = versionNumber;
 
 
-app.get("/", (req, res)=>{
+app.get("/", (req:any, res:any)=>{
     recordManager.takeData(connectionData.droneInfo);
     if(Date.now() - connectionData.droneInfo.packetTime >= newThreshold){
         getDroneData(connectionData).then((result)=>{
@@ -43,7 +43,7 @@ app.get("/", (req, res)=>{
     };
 });
 
-app.post("/commands", (req,res)=>{
+app.post("/commands", (req:any,res:any)=>{
     let command:DroneCommand = DroneCommand.fromString(req.body.command);
 
     if(command.operation == DroneOperation.START_RECORD){
@@ -52,7 +52,7 @@ app.post("/commands", (req,res)=>{
     if(command.operation == DroneOperation.END_RECORD){
         recordManager.stopRecording();
     }
-    
+
     connectionData.isRecording = recordManager.isRecording;
     sendDroneCommand(connectionData.droneURL, command);
     res.status(200);
@@ -60,7 +60,7 @@ app.post("/commands", (req,res)=>{
 });
 
 
-app.post("/serverconfig", (req, res)=>{
+app.post("/serverconfig", (req:any, res:any)=>{
     if(req.body.droneURL != ""){
         connectionData.droneURL = req.body.droneURL;
     }

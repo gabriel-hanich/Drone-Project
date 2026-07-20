@@ -7,10 +7,12 @@
   "type": "commonjs",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon ./src/main.ts",
+    "start": "nodemon --exec npx ts-node src/main.ts",
     "test": "nodemon ./src/testServer.ts"
   },
   "devDependencies": {
+    "ts-node": "^10.9.2",
+    "typescript": "^5.9.0",
     "@types/express": "^5.0.5",
     "@types/node": "^24.10.1",
     "nodemon": "^3.1.11"

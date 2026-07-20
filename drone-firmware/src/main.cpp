@@ -21,6 +21,7 @@ time_t lastPing = -1; // The last time that the ESP32 manages the connection
 const int disarmPanic = 5000; // The number of milliseconds the drone can go without communicating with the server
                               // before it will automatically disarm
 
+ProgramConstants CONSTANTS;
 WebManager server(CONSTANTS.ssid, CONSTANTS.password, CONSTANTS.port);
 time_t currentTime;
 time_t lastTime;
